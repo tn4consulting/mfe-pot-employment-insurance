@@ -1,0 +1,51 @@
+# syntax=docker/dockerfile:1
+#
+# Built from this repo's own root, post Phase 1 extraction (see the
+# platform repo's docs/plans/20260801-1935-mfe-pot-polyrepo-split-and-k8s-hosting.md).
+# Same shape as apps/job-bank-bff/Dockerfile in the sibling mfe-pot-job-bank
+# repo, which this was copied from -- see its comments for the fuller
+# story on the fixes below.
+#
+# This is a single-package Nx "integrated" workspace, not a per-project
+# pnpm workspace (no apps/*/package.json exists) -- Nx's `prune`/
+# `prune-lockfile` executors expect the latter and fail here
+# ("package.json does not exist"). So this copies the full workspace
+# node_modules into the runtime stage rather than a pruned subset. That's
+# an accepted PoT-scale simplification for now: this repo already depends
+# only on the pinned @tn4consulting/shared-* packages plus this BFF's own
+# runtime deps (express, cors), so node_modules is small -- no extra
+# pruning step needed.
+#
+# `pnpm install` resolves the whole workspace lockfile (single root
+# package.json), which includes @tn4consulting/shared-* even though this
+# BFF's own source doesn't import them -- same GitHub Packages auth need,
+# same file-mounted-secret and pnpm-store-cache-mount reasoning, as
+# apps/employment-insurance/Dockerfile's top comment.
+FROM node:22-alpine AS build
+WORKDIR /workspace
+# Without this, `nx`'s postinstall hook hangs indefinitely in this
+# non-interactive build (no TTY, stdin closed) -- CI=true is Nx's own
+# documented signal to skip whatever it's waiting on there.
+ENV CI=true
+RUN corepack enable && corepack prepare pnpm@10.33.2 --activate
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml nx.json tsconfig.base.json tsconfig.json .npmrc ./
+COPY apps ./apps
+COPY libs ./libs
+COPY tools ./tools
+RUN --mount=type=secret,id=npm_token \
+    --mount=type=cache,target=/root/.local/share/pnpm/store \
+    NODE_AUTH_TOKEN="$(cat /run/secrets/npm_token)" pnpm install --frozen-lockfile --network-concurrency=4
+RUN pnpm exec nx build employment-insurance-bff --configuration=production
+
+FROM node:22-alpine AS runtime
+WORKDIR /app
+ENV NODE_ENV=production
+# The Express server binds process.env.HOST (default 'localhost' in
+# main.ts, meant for local dev) -- inside a container that must be
+# 0.0.0.0, or the Pod's Service can never reach it despite the process
+# looking healthy from inside its own container.
+ENV HOST=0.0.0.0
+COPY --from=build /workspace/dist/apps/employment-insurance-bff ./
+COPY --from=build /workspace/node_modules ./node_modules
+EXPOSE 3002
+CMD ["node", "main.js"]

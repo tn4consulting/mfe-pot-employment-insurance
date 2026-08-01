@@ -1,0 +1,8 @@
+@if (hasAccess()) {
+  <lib-employment-insurance-feature-applications></lib-employment-insurance-feature-applications>
+  <lib-employment-insurance-feature-claims></lib-employment-insurance-feature-claims>
+  <lib-employment-insurance-feature-reporting></lib-employment-insurance-feature-reporting>
+} @else {
+  <p role="alert">{{ 'auth.signInRequired' | transloco }}</p>
+}
+<router-outlet></router-outlet>

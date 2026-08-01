@@ -1,0 +1,12 @@
+<section class="ei-claims">
+  <h2>Claim status</h2>
+  @if (loadError()) {
+    <p role="alert">Claim status is temporarily unavailable.</p>
+  } @else if (loaded()) {
+    @if (claim(); as activeClaim) {
+      <p>Claim {{ activeClaim.id }} — status: {{ activeClaim.status }}.</p>
+    } @else {
+      <p>No claim on file yet.</p>
+    }
+  }
+</section>

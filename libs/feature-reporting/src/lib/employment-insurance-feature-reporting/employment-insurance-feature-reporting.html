@@ -1,0 +1,16 @@
+<section class="ei-reporting">
+  <h2>Submit your EI report</h2>
+  @if (confirmation(); as report) {
+    <p role="status">Report {{ report.id }} submitted for {{ report.periodStart }} to {{ report.periodEnd }}.</p>
+  } @else if (reportError()) {
+    <p role="alert">EI reporting is temporarily unavailable.</p>
+  } @else if (!claimId()) {
+    <p>You need an active EI claim before you can submit a report.</p>
+  } @else {
+    <label for="ei-worked-hours">Hours worked this period</label>
+    <input id="ei-worked-hours" type="number" min="0" name="workedHours" [(ngModel)]="workedHours" />
+    <label for="ei-earnings">Earnings this period ($)</label>
+    <input id="ei-earnings" type="number" min="0" name="earnings" [(ngModel)]="earnings" />
+    <button type="button" [disabled]="submitting()" (click)="submit()">Submit report</button>
+  }
+</section>

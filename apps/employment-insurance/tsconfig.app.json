@@ -1,0 +1,35 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc",
+    "types": []
+  },
+  "include": [
+    "src/**/*.ts",
+    "../../libs/feature-applications/src/index.ts",
+    "../../libs/feature-claims/src/index.ts",
+    "../../libs/feature-reporting/src/index.ts",
+    "../../libs/data-access/src/index.ts"
+  ],
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "jest.config.ts",
+    "jest.config.cts",
+    "src/test-setup.ts"
+  ],
+  "references": [
+    {
+      "path": "../../libs/feature-reporting"
+    },
+    {
+      "path": "../../libs/feature-claims"
+    },
+    {
+      "path": "../../libs/feature-applications"
+    },
+    {
+      "path": "../../libs/data-access"
+    }
+  ]
+}

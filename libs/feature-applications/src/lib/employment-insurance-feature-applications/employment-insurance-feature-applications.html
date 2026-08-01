@@ -1,0 +1,11 @@
+<section class="ei-applications">
+  <h1>Employment Insurance — Apply</h1>
+  @if (confirmation(); as claim) {
+    <p role="status">Claim {{ claim.id }} — status: {{ claim.status }}, weekly benefit: ${{ claim.weeklyBenefitAmount.toFixed(2) }}.</p>
+  } @else if (submitError()) {
+    <p role="alert">EI applications are temporarily unavailable.</p>
+  } @else {
+    <p>Apply for Employment Insurance benefits.</p>
+    <button type="button" [disabled]="submitting()" (click)="apply()">Apply for EI</button>
+  }
+</section>
