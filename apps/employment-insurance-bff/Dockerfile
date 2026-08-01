@@ -23,9 +23,9 @@
 # apps/employment-insurance/Dockerfile's top comment.
 FROM node:22-alpine AS build
 WORKDIR /workspace
-# Without this, `nx`'s postinstall hook hangs indefinitely in this
-# non-interactive build (no TTY, stdin closed) -- CI=true is Nx's own
-# documented signal to skip whatever it's waiting on there.
+# CI=true kept for consistency, and the pnpm.onlyBuiltDependencies fix
+# (nx removed from that list) applied -- see the sibling mfe-pot-job-bank
+# repo's apps/job-bank/Dockerfile top comment for the fuller story on why.
 ENV CI=true
 RUN corepack enable && corepack prepare pnpm@10.33.2 --activate
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml nx.json tsconfig.base.json tsconfig.json .npmrc ./
