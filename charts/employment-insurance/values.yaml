@@ -11,8 +11,13 @@ frontend:
   # Ingress path rule below, not a separate hostname -- see CLAUDE.md's
   # Hosting section on why (reduces the real hostname count, makes this
   # call same-origin). Matches apps/employment-insurance/src/runtime-config.ts's shape.
+  # Empty, not "/api": HttpEmploymentInsuranceApiClient already appends
+  # "/api/..." itself (`${baseUrl}/api/claims`), so this value is just
+  # "this app's own origin" -- shared-runtime-config's fetchRuntimeConfig
+  # resolves "" to that origin. A literal "/api" here double-prefixes
+  # every request to /api/api/... and 404s.
   runtimeConfig:
-    employmentInsuranceBffBaseUrl: "/api"
+    employmentInsuranceBffBaseUrl: ""
 
 backend:
   name: employment-insurance-bff
