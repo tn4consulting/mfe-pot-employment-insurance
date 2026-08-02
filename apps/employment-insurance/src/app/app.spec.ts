@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { ContentClient } from '@tn4consulting/shared-content-client';
 import { TranslocoTestingModule } from '@tn4consulting/shared-i18n';
 import { clearSession, createMockSession, storeSession } from '@tn4consulting/shared-auth';
 import {
@@ -7,12 +8,16 @@ import {
   EmploymentInsuranceApiClient,
 } from 'employment-insurance-data-access';
 import { App } from './app';
+import { CONTENT_CLIENT } from './content-client.token';
 
 describe('App', () => {
   const apiClient: jest.Mocked<EmploymentInsuranceApiClient> = {
     applyForEi: jest.fn(),
     getClaim: jest.fn().mockResolvedValue(null),
     submitReport: jest.fn(),
+  };
+  const contentClient: jest.Mocked<ContentClient> = {
+    getPageContent: jest.fn().mockResolvedValue(null),
   };
 
   afterEach(() => clearSession());
@@ -32,6 +37,7 @@ describe('App', () => {
       providers: [
         provideRouter([]),
         { provide: EMPLOYMENT_INSURANCE_API_CLIENT, useValue: apiClient },
+        { provide: CONTENT_CLIENT, useValue: contentClient },
       ],
     }).compileComponents();
   }
@@ -50,6 +56,21 @@ describe('App', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('lib-employment-insurance-feature-applications')).not.toBeNull();
+  });
+
+  it('renders intro content fetched via ContentClient', async () => {
+    storeSession(createMockSession());
+    contentClient.getPageContent.mockResolvedValue({
+      key: 'employment-insurance.intro',
+      title: 'Employment Insurance',
+      body: 'Apply for Employment Insurance benefits, check your claim status, and submit your reports.',
+    });
+    await setup();
+    const fixture = TestBed.createComponent(App);
+    await fixture.componentInstance.ngOnInit();
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('h1')?.textContent).toContain('Employment Insurance');
   });
 
   it('blocks its own content when there is no active session, independent of the shell', async () => {

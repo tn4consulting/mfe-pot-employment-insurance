@@ -16,8 +16,13 @@ frontend:
   # "this app's own origin" -- shared-runtime-config's fetchRuntimeConfig
   # resolves "" to that origin. A literal "/api" here double-prefixes
   # every request to /api/api/... and 404s.
+  # strapiBaseUrl is browser-to-server (ContentClient fetches Strapi
+  # directly, same as shell's federation-manifest fetch) -- the real
+  # public Ingress hostname from mfe-pot-platform's charts/strapi, not
+  # in-cluster Service DNS.
   runtimeConfig:
     employmentInsuranceBffBaseUrl: ""
+    strapiBaseUrl: "http://cms.mfe-pot.local"
 
 backend:
   name: employment-insurance-bff
