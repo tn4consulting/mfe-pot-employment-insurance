@@ -1,0 +1,152 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '22.22.0'
+  PNPM_VERSION: '10.33.2'
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  # Stage 1: lint/test/build, matching `nx run-many -t lint,test,build --all`
+  # from local dev (see CLAUDE.md). @tn4consulting/* resolves from GitHub
+  # Packages via .npmrc; GITHUB_TOKEN works for same-org package reads.
+  lint-test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Lint, test, build
+        run: pnpm exec nx run-many -t lint,test,build --all
+
+      # employment-insurance-bff's lint target is inferred as
+      # `eslint:lint`, not `lint` (the @nx/node generator doesn't add an
+      # explicit `lint` target the way the Angular app does) -- see
+      # CLAUDE.md's "Backends: BFF pattern" section. `nx run-many -t
+      # lint` above silently skips it.
+      - name: Lint employment-insurance-bff
+        run: pnpm exec nx run employment-insurance-bff:eslint:lint
+
+  # Stage 2: build both images, deploy this app's own Helm chart to an
+  # ephemeral kind cluster, and confirm it actually serves -- the
+  # kind-based validation stage from CLAUDE.md's Hosting section, now
+  # automated instead of the one-off manual run it started as.
+  kind-validation:
+    needs: lint-test-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+        with:
+          path: mfe-pot-employment-insurance
+
+      # charts/employment-insurance/Chart.yaml's library-chart
+      # dependencies resolve via a sibling-checkout-relative file:// path
+      # (see CLAUDE.md) -- checked out alongside this repo so the same
+      # relative layout local dev uses (both under one parent directory)
+      # holds here too. Public repo, so the default GITHUB_TOKEN reads it
+      # with no extra secret.
+      - name: Checkout mfe-pot-platform (sibling - Helm library charts + kind config)
+        uses: actions/checkout@v4
+        with:
+          repository: tn4consulting/mfe-pot-platform
+          path: mfe-pot-platform
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build employment-insurance image
+        uses: docker/build-push-action@v6
+        with:
+          context: mfe-pot-employment-insurance
+          file: mfe-pot-employment-insurance/apps/employment-insurance/Dockerfile
+          tags: mfe-pot-employment-insurance:kind
+          load: true
+          secrets: |
+            npm_token=${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build employment-insurance-bff image
+        uses: docker/build-push-action@v6
+        with:
+          context: mfe-pot-employment-insurance
+          file: mfe-pot-employment-insurance/apps/employment-insurance-bff/Dockerfile
+          tags: mfe-pot-employment-insurance-bff:kind
+          load: true
+          secrets: |
+            npm_token=${{ secrets.GITHUB_TOKEN }}
+
+      # Pinned node image: this environment's Docker daemon (cgroup v1)
+      # can't kubeadm-init kind's current default node image (built for
+      # k8s 1.36) -- see CLAUDE.md. Kept pinned here too for consistency
+      # with the proven local recipe, even though GitHub-hosted runners
+      # typically run cgroup v2 and may not need the pin.
+      - name: Create kind cluster
+        uses: helm/kind-action@v1.10.0
+        with:
+          config: mfe-pot-platform/tools/k8s/kind-config.yaml
+          node_image: kindest/node:v1.27.3
+          wait: 120s
+
+      - name: Install ingress-nginx (kind flavour)
+        run: |
+          kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+          kubectl wait --namespace ingress-nginx \
+            --for=condition=ready pod \
+            --selector=app.kubernetes.io/component=controller \
+            --timeout=120s
+
+      - name: Load images into kind
+        run: |
+          kind load docker-image mfe-pot-employment-insurance:kind
+          kind load docker-image mfe-pot-employment-insurance-bff:kind
+
+      - uses: azure/setup-helm@v4
+
+      - name: helm dependency update
+        run: helm dependency update mfe-pot-employment-insurance/charts/employment-insurance
+
+      - name: helm install employment-insurance
+        run: |
+          helm install employment-insurance mfe-pot-employment-insurance/charts/employment-insurance \
+            -f mfe-pot-employment-insurance/charts/employment-insurance/values.yaml \
+            -f mfe-pot-employment-insurance/charts/employment-insurance/values-kind.yaml \
+            --wait --timeout 120s
+
+      # Same checks proven manually (see CLAUDE.md/the platform repo's
+      # plan doc): the frontend actually serves, the ConfigMap-injected
+      # runtime config round-tripped (not the image's {} placeholder),
+      # and the BFF is reachable through the same Ingress via /api. Hits
+      # /api/claims with no query param deliberately -- asserts a real
+      # 400 validation-error response (not a 404), proving the request
+      # actually reached the Express app rather than just testing
+      # infra-level routing existence.
+      - name: Verify the deployed app is actually reachable
+        run: |
+          set -eu
+          curl -sf -H "Host: employment-insurance.mfe-pot.local" http://localhost/ | grep -qi '<script src="env.js">'
+          curl -sf -H "Host: employment-insurance.mfe-pot.local" http://localhost/env.js | grep -q '"employmentInsuranceBffBaseUrl":"/api"'
+          status=$(curl -s -o /dev/null -w '%{http_code}' -H "Host: employment-insurance.mfe-pot.local" "http://localhost/api/claims")
+          [ "$status" = "400" ]
