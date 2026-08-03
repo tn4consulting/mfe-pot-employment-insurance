@@ -1,6 +1,7 @@
 import cors from 'cors';
 import express, { Express } from 'express';
-import { createClaim, createReport, getClaim } from './data';
+import { createClaim, createReport, getClaim, getReports } from './data';
+import { computeReportingStatus } from './reporting-status';
 
 /**
  * Employment Insurance's own dedicated backend -- realistic shape for a
@@ -37,6 +38,20 @@ export function createApp(): Express {
       return;
     }
     res.json(claim);
+  });
+
+  app.get('/api/reporting-status', (req, res) => {
+    const applicantSub = req.query['applicantSub'];
+    if (typeof applicantSub !== 'string') {
+      res.status(400).json({ error: 'applicantSub query parameter is required' });
+      return;
+    }
+    const claim = getClaim(applicantSub);
+    if (!claim) {
+      res.status(404).json({ error: 'No claim on file' });
+      return;
+    }
+    res.json(computeReportingStatus(claim, getReports(claim.id)));
   });
 
   app.post('/api/reports', (req, res) => {

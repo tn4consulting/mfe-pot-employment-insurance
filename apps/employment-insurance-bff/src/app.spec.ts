@@ -54,4 +54,49 @@ describe('employment-insurance-bff', () => {
     expect(res.status).toBe(201);
     expect(res.body).toMatchObject({ claimId: 'claim-1', applicantSub: 'mock-citizen-001' });
   });
+
+  it('returns 404 for reporting status when there is no claim on file', async () => {
+    const res = await request(app).get('/api/reporting-status').query({ applicantSub: 'nobody' });
+    expect(res.status).toBe(404);
+  });
+
+  it('reports a not-yet-due status anchored on the claim date when no reports exist', async () => {
+    const created = await request(app)
+      .post('/api/applications')
+      .send({ applicantSub: 'mock-citizen-003' });
+
+    const res = await request(app)
+      .get('/api/reporting-status')
+      .query({ applicantSub: 'mock-citizen-003' });
+
+    expect(res.status).toBe(200);
+    expect(res.body.claimId).toBe(created.body.id);
+    expect(res.body.status).toBe('not_yet_due');
+    expect(res.body.daysUntilDue).toBeGreaterThan(3);
+  });
+
+  it('advances the due date past the most recently reported period', async () => {
+    const created = await request(app)
+      .post('/api/applications')
+      .send({ applicantSub: 'mock-citizen-004' });
+    const claimId = created.body.id as string;
+
+    const farFutureEnd = new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+    await request(app).post('/api/reports').send({
+      claimId,
+      applicantSub: 'mock-citizen-004',
+      periodStart: '2026-07-01',
+      periodEnd: farFutureEnd,
+      workedHours: 0,
+      earnings: 0,
+    });
+
+    const res = await request(app)
+      .get('/api/reporting-status')
+      .query({ applicantSub: 'mock-citizen-004' });
+
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe('not_yet_due');
+    expect(res.body.daysUntilDue).toBeGreaterThan(14);
+  });
 });

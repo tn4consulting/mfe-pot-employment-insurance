@@ -38,6 +38,10 @@ export function getClaim(applicantSub: string): EiClaim | undefined {
   return [...claims].reverse().find((claim) => claim.applicantSub === applicantSub);
 }
 
+export function getReports(claimId: string): EiReport[] {
+  return reports.filter((report) => report.claimId === claimId);
+}
+
 export function createReport(
   claimId: string,
   applicantSub: string,
