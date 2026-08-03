@@ -14,6 +14,7 @@ describe('App', () => {
   const apiClient: jest.Mocked<EmploymentInsuranceApiClient> = {
     applyForEi: jest.fn(),
     getClaim: jest.fn().mockResolvedValue(null),
+    getReportingStatus: jest.fn().mockResolvedValue(null),
     submitReport: jest.fn(),
   };
   const contentClient: jest.Mocked<ContentClient> = {

@@ -25,6 +25,7 @@
       "employment-insurance-feature-applications": ["./libs/feature-applications/src/index.ts"],
       "employment-insurance-feature-claims": ["./libs/feature-claims/src/index.ts"],
       "employment-insurance-feature-reporting": ["./libs/feature-reporting/src/index.ts"],
+      "employment-insurance-feature-reporting-status": ["./libs/feature-reporting-status/src/index.ts"],
       "employment-insurance-data-access": ["./libs/data-access/src/index.ts"]
     }
   },

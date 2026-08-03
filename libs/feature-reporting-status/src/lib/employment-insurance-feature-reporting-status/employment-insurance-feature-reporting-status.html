@@ -1,0 +1,23 @@
+<section class="reporting-status">
+  <h2>{{ 'reportingStatus.heading' | transloco }}</h2>
+  @if (loadError()) {
+    <p role="alert">{{ 'reportingStatus.unavailable' | transloco }}</p>
+  } @else if (loaded()) {
+    @if (reportingStatus(); as status) {
+      <p>
+        <span
+          class="status-pill"
+          [class.status-pill--overdue]="status.status === 'overdue'"
+          [class.status-pill--due-soon]="status.status === 'due_soon'"
+        >
+          {{ statusLabelKey() | transloco }}
+        </span>
+      </p>
+      <p>
+        {{ 'reportingStatus.nextReportDue' | transloco: { date: formattedNextReportDue(), days: status.daysUntilDue } }}
+      </p>
+    } @else {
+      <p>{{ 'reportingStatus.noClaim' | transloco }}</p>
+    }
+  }
+</section>

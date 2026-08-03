@@ -10,6 +10,7 @@ describe('EmploymentInsuranceFeatureClaims', () => {
   const apiClient: jest.Mocked<EmploymentInsuranceApiClient> = {
     applyForEi: jest.fn(),
     getClaim: jest.fn(),
+    getReportingStatus: jest.fn(),
     submitReport: jest.fn(),
   };
 

@@ -1,5 +1,14 @@
 {
   "auth": {
     "signInRequired": "You need to sign in to manage your Employment Insurance."
+  },
+  "reportingStatus": {
+    "heading": "EI Reporting Status",
+    "notYetDue": "Not yet due",
+    "dueSoon": "Due soon",
+    "overdue": "Overdue",
+    "nextReportDue": "Next report due {{date}} ({{days}} days)",
+    "noClaim": "No active EI claim on file.",
+    "unavailable": "EI reporting status is temporarily unavailable."
   }
 }
