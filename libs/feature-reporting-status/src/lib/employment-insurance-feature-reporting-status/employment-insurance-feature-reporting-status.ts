@@ -2,7 +2,14 @@ import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslocoPipe, TranslocoService } from '@tn4consulting/shared-i18n';
 import { getStoredSession } from '@tn4consulting/shared-auth';
+import { ScdsCard, ScdsCardTone } from '@tn4consulting/shared-ui-scds';
 import { EMPLOYMENT_INSURANCE_API_CLIENT, EiReportingStatus, EiReportingStatusLabel } from 'employment-insurance-data-access';
+
+const STATUS_TONE: Record<EiReportingStatusLabel, ScdsCardTone | undefined> = {
+  not_yet_due: undefined,
+  due_soon: 'warning',
+  overdue: 'danger',
+};
 
 const STATUS_LABEL_KEY: Record<EiReportingStatusLabel, string> = {
   not_yet_due: 'reportingStatus.notYetDue',
@@ -20,9 +27,8 @@ const STATUS_LABEL_KEY: Record<EiReportingStatusLabel, string> = {
  */
 @Component({
   selector: 'lib-employment-insurance-feature-reporting-status',
-  imports: [CommonModule, TranslocoPipe],
+  imports: [CommonModule, TranslocoPipe, ScdsCard],
   templateUrl: './employment-insurance-feature-reporting-status.html',
-  styleUrl: './employment-insurance-feature-reporting-status.css',
 })
 export class EmploymentInsuranceFeatureReportingStatus implements OnInit {
   private readonly apiClient = inject(EMPLOYMENT_INSURANCE_API_CLIENT);
@@ -36,6 +42,11 @@ export class EmploymentInsuranceFeatureReportingStatus implements OnInit {
   protected readonly statusLabelKey = computed(() => {
     const status = this.reportingStatus();
     return status ? STATUS_LABEL_KEY[status.status] : null;
+  });
+
+  protected readonly statusTone = computed(() => {
+    const status = this.reportingStatus();
+    return status ? STATUS_TONE[status.status] : undefined;
   });
 
   protected readonly formattedNextReportDue = computed(() => {

@@ -4,7 +4,11 @@
     <p role="alert">Claim status is temporarily unavailable.</p>
   } @else if (loaded()) {
     @if (claim(); as activeClaim) {
-      <p>Claim {{ activeClaim.id }} — status: {{ activeClaim.status }}.</p>
+      <scds-card
+        [cardTitle]="'Claim ' + activeClaim.id"
+        [description]="'Status: ' + activeClaim.status + '.'"
+        [tone]="claimTone(activeClaim)"
+      ></scds-card>
     } @else {
       <p>No claim on file yet.</p>
     }

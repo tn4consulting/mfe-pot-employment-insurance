@@ -13,7 +13,7 @@ module.exports = {
       },
     ],
   },
-  transformIgnorePatterns: ['node_modules/(?!\\.pnpm|(@angular-architects|@softarc|@gcds-core|@jsverse|@tn4consulting)/|.*\\.mjs$)'],
+  transformIgnorePatterns: ['node_modules/(?!\\.pnpm|(@angular-architects|@softarc|@gcds-core|@jsverse|@tn4consulting|@stencil)/|.*\\.mjs$)'],
   snapshotSerializers: [
     'jest-preset-angular/build/serializers/no-ng-attributes',
     'jest-preset-angular/build/serializers/ng-snapshot',

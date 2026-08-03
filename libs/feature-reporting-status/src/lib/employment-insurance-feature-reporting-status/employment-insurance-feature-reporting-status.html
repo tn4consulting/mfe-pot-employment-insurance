@@ -4,18 +4,11 @@
     <p role="alert">{{ 'reportingStatus.unavailable' | transloco }}</p>
   } @else if (loaded()) {
     @if (reportingStatus(); as status) {
-      <p>
-        <span
-          class="status-pill"
-          [class.status-pill--overdue]="status.status === 'overdue'"
-          [class.status-pill--due-soon]="status.status === 'due_soon'"
-        >
-          {{ statusLabelKey() | transloco }}
-        </span>
-      </p>
-      <p>
-        {{ 'reportingStatus.nextReportDue' | transloco: { date: formattedNextReportDue(), days: status.daysUntilDue } }}
-      </p>
+      <scds-card
+        [cardTitle]="statusLabelKey() | transloco"
+        [description]="'reportingStatus.nextReportDue' | transloco: { date: formattedNextReportDue(), days: status.daysUntilDue }"
+        [tone]="statusTone()"
+      ></scds-card>
     } @else {
       <p>{{ 'reportingStatus.noClaim' | transloco }}</p>
     }

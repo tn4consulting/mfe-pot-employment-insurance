@@ -7,6 +7,13 @@ import { TranslocoTestingModule } from '@tn4consulting/shared-i18n';
 import { clearSession, createMockSession, storeSession } from '@tn4consulting/shared-auth';
 import { EmploymentInsuranceFeatureReportingStatus } from './employment-insurance-feature-reporting-status';
 
+// scds-card renders its title/description into its own shadow DOM (a real
+// custom element, not an Angular template) on a tick outside Angular's
+// change detection -- both need to be awaited/queried through shadowRoot.
+function waitForRender(): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, 20));
+}
+
 const REPORTING_STATUS_LANGS = {
   en: {
     reportingStatus: {
@@ -78,8 +85,10 @@ describe('EmploymentInsuranceFeatureReportingStatus', () => {
     const fixture = TestBed.createComponent(EmploymentInsuranceFeatureReportingStatus);
     await fixture.componentInstance.ngOnInit();
     fixture.detectChanges();
+    await waitForRender();
 
-    const text = (fixture.nativeElement as HTMLElement).textContent ?? '';
+    const card = (fixture.nativeElement as HTMLElement).querySelector('scds-card');
+    const text = card?.shadowRoot?.textContent ?? '';
     expect(text).toContain('Not yet due');
     expect(text).toContain('7');
   });
