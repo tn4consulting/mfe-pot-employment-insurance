@@ -18,3 +18,12 @@ export interface EiReport {
   earnings: number;
   submittedAt: string;
 }
+
+export type EiReportingStatusLabel = 'not_yet_due' | 'due_soon' | 'overdue';
+
+export interface EiReportingStatus {
+  claimId: string;
+  nextReportDue: string;
+  daysUntilDue: number;
+  status: EiReportingStatusLabel;
+}

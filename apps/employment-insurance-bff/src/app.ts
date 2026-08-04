@@ -1,6 +1,8 @@
 import cors from 'cors';
 import express, { Express } from 'express';
-import { createClaim, createReport, getClaim } from './data';
+import { sessionCache } from './config';
+import { createClaim, createReport, getClaim, getReports } from './data';
+import { computeReportingStatus } from './reporting-status';
 
 /**
  * Employment Insurance's own dedicated backend -- realistic shape for a
@@ -16,22 +18,22 @@ export function createApp(): Express {
     res.json({ status: 'ok' });
   });
 
-  app.post('/api/applications', (req, res) => {
+  app.post('/api/applications', async (req, res) => {
     const { applicantSub } = req.body as { applicantSub?: string };
     if (!applicantSub) {
       res.status(400).json({ error: 'applicantSub is required' });
       return;
     }
-    res.status(201).json(createClaim(applicantSub));
+    res.status(201).json(await createClaim(applicantSub));
   });
 
-  app.get('/api/claims', (req, res) => {
+  app.get('/api/claims', async (req, res) => {
     const applicantSub = req.query['applicantSub'];
     if (typeof applicantSub !== 'string') {
       res.status(400).json({ error: 'applicantSub query parameter is required' });
       return;
     }
-    const claim = getClaim(applicantSub);
+    const claim = await getClaim(applicantSub);
     if (!claim) {
       res.status(404).json({ error: 'No claim on file' });
       return;
@@ -39,7 +41,21 @@ export function createApp(): Express {
     res.json(claim);
   });
 
-  app.post('/api/reports', (req, res) => {
+  app.get('/api/reporting-status', async (req, res) => {
+    const applicantSub = req.query['applicantSub'];
+    if (typeof applicantSub !== 'string') {
+      res.status(400).json({ error: 'applicantSub query parameter is required' });
+      return;
+    }
+    const claim = await getClaim(applicantSub);
+    if (!claim) {
+      res.status(404).json({ error: 'No claim on file' });
+      return;
+    }
+    res.json(computeReportingStatus(claim, await getReports(claim.id)));
+  });
+
+  app.post('/api/reports', async (req, res) => {
     const { claimId, applicantSub, periodStart, periodEnd, workedHours, earnings } = req.body as {
       claimId?: string;
       applicantSub?: string;
@@ -57,8 +73,16 @@ export function createApp(): Express {
     res
       .status(201)
       .json(
-        createReport(claimId, applicantSub, periodStart, periodEnd, workedHours ?? 0, earnings ?? 0),
+        await createReport(claimId, applicantSub, periodStart, periodEnd, workedHours ?? 0, earnings ?? 0),
       );
+  });
+
+  // PoT-only, no auth -- unlocks a repeatable `pnpm demo:reset` (see
+  // mfe-pot/TODO.md) by clearing this BFF's own Redis-backed state between
+  // local/CI runs and live demos.
+  app.post('/api/reset', async (_req, res) => {
+    await sessionCache.reset();
+    res.status(204).send();
   });
 
   return app;

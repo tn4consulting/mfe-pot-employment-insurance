@@ -3,6 +3,7 @@ import {
   EMPLOYMENT_INSURANCE_API_CLIENT,
   HttpEmploymentInsuranceApiClient,
 } from 'employment-insurance-data-access';
+import { CONTENT_CLIENT, createContentClient } from './content-client.token';
 import { loadRuntimeConfig } from '../runtime-config';
 
 // Split across two statements deliberately: Vite/esbuild specially
@@ -22,5 +23,9 @@ export const REMOTE_PROVIDERS = loadRuntimeConfig(assetBaseUrl).then((runtimeCon
   {
     provide: EMPLOYMENT_INSURANCE_API_CLIENT,
     useValue: new HttpEmploymentInsuranceApiClient(runtimeConfig.employmentInsuranceBffBaseUrl),
+  },
+  {
+    provide: CONTENT_CLIENT,
+    useValue: createContentClient(runtimeConfig.strapiBaseUrl),
   },
 ]);

@@ -55,18 +55,33 @@ importers:
       '@jsverse/transloco':
         specifier: 8.4.0
         version: 8.4.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2)(typescript@6.0.3)
+      '@stencil/core':
+        specifier: ^4.43.5
+        version: 4.43.5
       '@tn4consulting/shared-auth':
         specifier: ^0.1.1
         version: 0.1.1(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/router@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/platform-browser@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)))(rxjs@7.8.2))
-      '@tn4consulting/shared-federation-config':
+      '@tn4consulting/shared-content-client':
         specifier: ^0.1.1
-        version: 0.1.1(@angular-architects/native-federation@22.0.6(@angular/build@22.1.0(@angular/compiler-cli@22.1.0(@angular/compiler@22.1.0)(typescript@6.0.3))(@angular/compiler@22.1.0)(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/platform-browser@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)))(@types/node@24.13.3)(chokidar@5.0.0)(istanbul-lib-instrument@6.0.3)(jiti@2.7.0)(less@4.5.1)(postcss@8.5.25)(sass-embedded@1.100.0)(terser@5.49.0)(tslib@2.8.1)(typescript@6.0.3)(yaml@2.9.0))(chokidar@5.0.0)(typescript@6.0.3))
+        version: 0.1.1
+      '@tn4consulting/shared-federation-config':
+        specifier: ^0.4.0
+        version: 0.4.0(@angular-architects/native-federation@22.0.6(@angular/build@22.1.0(@angular/compiler-cli@22.1.0(@angular/compiler@22.1.0)(typescript@6.0.3))(@angular/compiler@22.1.0)(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/platform-browser@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)))(@types/node@24.13.3)(chokidar@5.0.0)(istanbul-lib-instrument@6.0.3)(jiti@2.7.0)(less@4.5.1)(postcss@8.5.25)(sass-embedded@1.100.0)(terser@5.49.0)(tslib@2.8.1)(typescript@6.0.3)(yaml@2.9.0))(chokidar@5.0.0)(typescript@6.0.3))(@softarc/native-federation@4.3.2(typescript@6.0.3))
       '@tn4consulting/shared-i18n':
         specifier: ^0.1.2
         version: 0.1.2(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@jsverse/transloco@8.4.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2)(typescript@6.0.3))
       '@tn4consulting/shared-runtime-config':
-        specifier: ^0.1.2
-        version: 0.1.2
+        specifier: ^0.1.4
+        version: 0.1.4
+      '@tn4consulting/shared-session-cache':
+        specifier: ^0.1.0
+        version: 0.1.0
+      '@tn4consulting/shared-ui-scds':
+        specifier: ^0.2.0
+        version: 0.2.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@gcds-core/components-angular@1.4.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@gcds-core/components@1.4.0))(@tn4consulting/shared-ui-scds-core@0.2.0)(rxjs@7.8.2)
+      '@tn4consulting/shared-ui-scds-core':
+        specifier: ^0.2.0
+        version: 0.2.0
       cors:
         specifier: ^2.8.6
         version: 2.8.6
@@ -1732,6 +1747,9 @@ packages:
       '@types/node':
         optional: true
 
+  '@ioredis/commands@1.10.0':
+    resolution: {integrity: sha512-UmeW7z4LfctwoQ5wkhVzgq8tXkreED2xZGpX+Bg+zA+WJFZCT6c062AfCK/Dfk81xZnnwdhJCUMkitihRaoC2Q==}
+
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
@@ -3255,6 +3273,50 @@ packages:
   '@rolldown/pluginutils@1.0.1':
     resolution: {integrity: sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==}
 
+  '@rollup/rollup-darwin-arm64@4.44.0':
+    resolution: {integrity: sha512-VGF3wy0Eq1gcEIkSCr8Ke03CWT+Pm2yveKLaDvq51pPpZza3JX/ClxXOCmTYYq3us5MvEuNRTaeyFThCKRQhOA==}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@rollup/rollup-darwin-x64@4.44.0':
+    resolution: {integrity: sha512-fBkyrDhwquRvrTxSGH/qqt3/T0w5Rg0L7ZIDypvBPc1/gzjJle6acCpZ36blwuwcKD/u6oCE/sRWlUAcxLWQbQ==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@rollup/rollup-linux-arm64-gnu@4.44.0':
+    resolution: {integrity: sha512-ZTR2mxBHb4tK4wGf9b8SYg0Y6KQPjGpR4UWwTFdnmjB4qRtoATZ5dWn3KsDwGa5Z2ZBOE7K52L36J9LueKBdOQ==}
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  '@rollup/rollup-linux-arm64-musl@4.44.0':
+    resolution: {integrity: sha512-GFWfAhVhWGd4r6UxmnKRTBwP1qmModHtd5gkraeW2G490BpFOZkFtem8yuX2NyafIP/mGpRJgTJ2PwohQkUY/Q==}
+    cpu: [arm64]
+    os: [linux]
+    libc: [musl]
+
+  '@rollup/rollup-linux-x64-gnu@4.44.0':
+    resolution: {integrity: sha512-iUVJc3c0o8l9Sa/qlDL2Z9UP92UZZW1+EmQ4xfjTc1akr0iUFZNfxrXJ/R1T90h/ILm9iXEY6+iPrmYB3pXKjw==}
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  '@rollup/rollup-linux-x64-musl@4.44.0':
+    resolution: {integrity: sha512-PQUobbhLTQT5yz/SPg116VJBgz+XOtXt8D1ck+sfJJhuEsMj2jSej5yTdp8CvWBSceu+WW+ibVL6dm0ptG5fcA==}
+    cpu: [x64]
+    os: [linux]
+    libc: [musl]
+
+  '@rollup/rollup-win32-arm64-msvc@4.44.0':
+    resolution: {integrity: sha512-M0CpcHf8TWn+4oTxJfh7LQuTuaYeXGbk0eageVjQCKzYLsajWS/lFC94qlRqOlyC2KvRT90ZrfXULYmukeIy7w==}
+    cpu: [arm64]
+    os: [win32]
+
+  '@rollup/rollup-win32-x64-msvc@4.44.0':
+    resolution: {integrity: sha512-Q2Mgwt+D8hd5FIPUuPDsvPR7Bguza6yTkJxspDGkZj7tBRn2y4KSWYuIXpftFSjBra76TbKerCV7rgFPQrn+wQ==}
+    cpu: [x64]
+    os: [win32]
+
   '@rspack/binding-darwin-arm64@2.1.7':
     resolution: {integrity: sha512-DwxzrXRctueP/3Pyom9JHcIsRShuEAlHb+mrE5OPT+4cdHI1UnJpbzEvEDLTo4IKJhDb3vjXdHLtjqtL0SYbeA==}
     cpu: [arm64]
@@ -3367,6 +3429,11 @@ packages:
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
+  '@stencil/core@4.43.5':
+    resolution: {integrity: sha512-cgWD+GeuvJpTe1WQn40p02+BJ2j0j1YJ17GdkF2qKIQ23s2e3Zivq5yISXS3dcuV6oUJFN93jprdk+nk/sq99Q==}
+    engines: {node: '>=16.0.0', npm: '>=7.10.0'}
+    hasBin: true
+
   '@swc-node/core@1.15.0':
     resolution: {integrity: sha512-WAerrrl087WgenB92XG4Th2t0NQFfMNLYSe0sW2cEMMqM/LQmP4rozsDJl0vuzTrbewjpKQryxFXI+aYig/dBg==}
     engines: {node: '>= 10'}
@@ -3475,10 +3542,19 @@ packages:
       '@angular/core': 22.1.0
       '@angular/router': 22.1.0
 
-  '@tn4consulting/shared-federation-config@0.1.1':
-    resolution: {integrity: sha512-Lu4kvnGm8l4JTtBBwlv4Hkevd39Y208qttpo5xpDI16/zBf9d6JcW7MA8V8MYBh+E14xxYimRHPYG5wiViO01Q==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-federation-config/0.1.1/8a4a22331285ac12892b0e15844b8b5c7e2f9c18}
+  '@tn4consulting/shared-content-client@0.1.1':
+    resolution: {integrity: sha512-zsBRzk64/jy79nVTYAme1olbonZ3LsTAeX/zeO1V54R9ctiI0WilfP6HzTr4QGxZHxQZ3mP5NIQF1xG/dDADJQ==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-content-client/0.1.1/e771794d4c182e173d3aa4ef40e7aeffc39df3d7}
+
+  '@tn4consulting/shared-federation-config@0.4.0':
+    resolution: {integrity: sha512-GW5NqMGKJnSmVgkgC6ssVxlHD9K6BIUmavtfLnNh+ktbtBdUpkhKiUfKKvNErqvWNUxm5I9/t+BFRaKQs0tkgA==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-federation-config/0.4.0/3f296d40c6693bbaa5511efd579d646158cd5856}
     peerDependencies:
       '@angular-architects/native-federation': '>=22.0.0'
+      '@softarc/native-federation': '>=4.0.0'
+    peerDependenciesMeta:
+      '@angular-architects/native-federation':
+        optional: true
+      '@softarc/native-federation':
+        optional: true
 
   '@tn4consulting/shared-i18n@0.1.2':
     resolution: {integrity: sha512-Ycnj+GnjU/JMRsAqmdsM1aHlVs5Xf98mR/6NS1wTUGgKV3d8mR33i5QojxsmgkrBchn+9QhkCuDKX9PIG3NODg==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-i18n/0.1.2/f0be07ac67548bd909bd844335b390c524b2b0e3}
@@ -3487,8 +3563,23 @@ packages:
       '@angular/core': 22.1.0
       '@jsverse/transloco': '>=8.4.0'
 
-  '@tn4consulting/shared-runtime-config@0.1.2':
-    resolution: {integrity: sha512-pLy5CB+QSTLisJWRy9eDliOirAidwX8mVi4YdTNOvKAfJi9wdwV+AEpUzGDTCKGywbCE3lAvqf7ejjHhGAyVQQ==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-runtime-config/0.1.2/d787d21c9499cd6d31b79488e687ab8a2e998f54}
+  '@tn4consulting/shared-runtime-config@0.1.4':
+    resolution: {integrity: sha512-gFSqm28XISQowq1maFjWuRNScXAE57EjRG4+KrpgDuQ0HTR1jMjQI0qWXySrf2/vBnyeZpZ0ATgnNG0Pr4UPrw==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-runtime-config/0.1.4/df515d211b976c6d9fa401e83f34ff5cd07412e3}
+
+  '@tn4consulting/shared-session-cache@0.1.0':
+    resolution: {integrity: sha512-qLypYn/rWxHZfXb5Aug7ZTv+bbnTgZJPt0fswtHlF+Jj2I55q8/LsBAdBJCuZx7PLcHzzORj+XXgIAuKERzbsA==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-session-cache/0.1.0/7b08f687121dc57fd1f8dbef289705cff9180fa7}
+
+  '@tn4consulting/shared-ui-scds-core@0.2.0':
+    resolution: {integrity: sha512-yFFT7IGH6/Kbs5it2ib4cKWpSDjCOF3wD9AdIguh8OtAzIL15Swz/Y/eXY4+I3qpsiRQIBlh1HqJWY61CsFpew==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-ui-scds-core/0.2.0/710eecb4e8dffcffb48b97fe17d52a0f82132243}
+
+  '@tn4consulting/shared-ui-scds@0.2.0':
+    resolution: {integrity: sha512-plBU8WT/zvbG6OexCAocTcYoD+RCmMHLJeb52dhKTrfuBOJpQBgXPUNBpDQ2GzNhZFpFNIKmsA5FOdnEghYNUQ==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-ui-scds/0.2.0/5cd083e583d733a96e5337547ff66d89ca286dcb}
+    peerDependencies:
+      '@angular/common': 22.1.0
+      '@angular/core': 22.1.0
+      '@gcds-core/components-angular': '>=1.4.0'
+      '@tn4consulting/shared-ui-scds-core': '>=0.2.0'
+      rxjs: '>=7.8.0'
 
   '@tsconfig/node10@1.0.12':
     resolution: {integrity: sha512-UCYBaeFvM11aU2y3YPZ//O5Rhj+xKyzy7mvcIoAjASbigy8mHMryP5cK7dgjlz2hWxh1g5pLw084E0a/wlUSFQ==}
@@ -4308,6 +4399,10 @@ packages:
     resolution: {integrity: sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==}
     engines: {node: '>=0.8'}
 
+  cluster-key-slot@1.1.1:
+    resolution: {integrity: sha512-rwHwUfXL40Chm1r08yrhU3qpUvdVlgkKNeyeGPOxnW8/SyVDvgRaed/Uz54AqWNaTCAThlj6QAs3TZcKI0xDEw==}
+    engines: {node: '>=0.10.0'}
+
   co@4.6.0:
     resolution: {integrity: sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==}
     engines: {iojs: '>= 1.0.0', node: '>= 0.12.0'}
@@ -4594,6 +4689,10 @@ packages:
   delayed-stream@1.0.0:
     resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
     engines: {node: '>=0.4.0'}
+
+  denque@2.1.0:
+    resolution: {integrity: sha512-HVQE3AAb/pxF8fQAoiqpvg9i3evqug3hoiwakOyZAwJm+6vZehbkYXZ0l4JxS+I3QxM97v5aaRNhj8v5oBhekw==}
+    engines: {node: '>=0.10'}
 
   depd@2.0.0:
     resolution: {integrity: sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==}
@@ -5302,6 +5401,10 @@ packages:
 
   inherits@2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
+
+  ioredis@5.11.1:
+    resolution: {integrity: sha512-ehuGcf94bQXhfagULNXrJdfnWO38v070jxSx/qE87Kjzmu2fU7ro5EFAb+OPituLqgfyuQaym5DlrNydW2sJ9A==}
+    engines: {node: '>=12.22.0'}
 
   ip-address@10.4.0:
     resolution: {integrity: sha512-oSK96Grm3aP6OrS263xVxbNDGVL7rzBtYdpGqlDG8iQdoenDoTs/nkki+DflYbAEE8Xl6o5YxhxlrKvI3nqKXQ==}
@@ -6698,6 +6801,14 @@ packages:
     resolution: {integrity: sha512-9u/XQ1pvrQtYyMpZe7DXKv2p5CNvyVwzUB6uhLAnQwHMSgKMBR62lc7AHljaeteeHXn11XTAaLLUVZYVZyuRBQ==}
     engines: {node: '>= 20.19.0'}
 
+  redis-errors@1.2.0:
+    resolution: {integrity: sha512-1qny3OExCf0UvUV/5wpYKf2YwPcOqXzkwKKSmKHiE6ZMQs5heeE/c8eXK+PNllPvmjgAbfnsbpkGZWy8cBpn9w==}
+    engines: {node: '>=4'}
+
+  redis-parser@3.0.0:
+    resolution: {integrity: sha512-DJnGAeenTdpMEH6uAJRK/uiyEIH9WVsUmoLwzudwGJUwZPp80PDBWPHXSAGNPwNvIXAbe7MSUB1zQFugFml66A==}
+    engines: {node: '>=4'}
+
   reflect-metadata@0.2.2:
     resolution: {integrity: sha512-urBwgfrvVP/eAyXx4hluJivBKzuEbSQs9rKWCrCkbSxNv8mxPcUZKeuoF3Uy4mJl3Lwprp6yy5/39VWigZ4K6Q==}
 
@@ -7098,6 +7209,9 @@ packages:
   stack-utils@2.0.6:
     resolution: {integrity: sha512-XlkWvfIm6RmsWtNJx+uqtKLS8eqFbxUg0ZzLXqY0caEy9l7hruX8IpiDnjsLavoBgqCCR71TqWO8MaXYheJ3RQ==}
     engines: {node: '>=10'}
+
+  standard-as-callback@2.1.0:
+    resolution: {integrity: sha512-qoRRSyROncaz1z0mvYqIE4lCd9p2R90i6GxW3uZv5ucSu8tU7B5HXUP1gG8pVZsYNVaXjk8ClXHPttLyxAL48A==}
 
   statuses@2.0.2:
     resolution: {integrity: sha512-DvEy55V3DB7uknRo+4iOGT5fP1slR8wQohVdknigZPMpMstaKJQWhwiYBACJE3Ul2pTnATihhBYnRhZQHGBiRw==}
@@ -9370,6 +9484,8 @@ snapshots:
     optionalDependencies:
       '@types/node': 24.13.3
 
+  '@ioredis/commands@1.10.0': {}
+
   '@isaacs/cliui@8.0.2':
     dependencies:
       string-width: 5.1.2
@@ -11009,6 +11125,30 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.1': {}
 
+  '@rollup/rollup-darwin-arm64@4.44.0':
+    optional: true
+
+  '@rollup/rollup-darwin-x64@4.44.0':
+    optional: true
+
+  '@rollup/rollup-linux-arm64-gnu@4.44.0':
+    optional: true
+
+  '@rollup/rollup-linux-arm64-musl@4.44.0':
+    optional: true
+
+  '@rollup/rollup-linux-x64-gnu@4.44.0':
+    optional: true
+
+  '@rollup/rollup-linux-x64-musl@4.44.0':
+    optional: true
+
+  '@rollup/rollup-win32-arm64-msvc@4.44.0':
+    optional: true
+
+  '@rollup/rollup-win32-x64-msvc@4.44.0':
+    optional: true
+
   '@rspack/binding-darwin-arm64@2.1.7':
     optional: true
 
@@ -11111,6 +11251,17 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
+  '@stencil/core@4.43.5':
+    optionalDependencies:
+      '@rollup/rollup-darwin-arm64': 4.44.0
+      '@rollup/rollup-darwin-x64': 4.44.0
+      '@rollup/rollup-linux-arm64-gnu': 4.44.0
+      '@rollup/rollup-linux-arm64-musl': 4.44.0
+      '@rollup/rollup-linux-x64-gnu': 4.44.0
+      '@rollup/rollup-linux-x64-musl': 4.44.0
+      '@rollup/rollup-win32-arm64-msvc': 4.44.0
+      '@rollup/rollup-win32-x64-msvc': 4.44.0
+
   '@swc-node/core@1.15.0(@swc/core@1.15.8(@swc/helpers@0.5.18))(@swc/types@0.1.28)':
     dependencies:
       '@swc/core': 1.15.8(@swc/helpers@0.5.18)
@@ -11200,9 +11351,12 @@ snapshots:
       '@angular/core': 22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)
       '@angular/router': 22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/platform-browser@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)))(rxjs@7.8.2)
 
-  '@tn4consulting/shared-federation-config@0.1.1(@angular-architects/native-federation@22.0.6(@angular/build@22.1.0(@angular/compiler-cli@22.1.0(@angular/compiler@22.1.0)(typescript@6.0.3))(@angular/compiler@22.1.0)(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/platform-browser@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)))(@types/node@24.13.3)(chokidar@5.0.0)(istanbul-lib-instrument@6.0.3)(jiti@2.7.0)(less@4.5.1)(postcss@8.5.25)(sass-embedded@1.100.0)(terser@5.49.0)(tslib@2.8.1)(typescript@6.0.3)(yaml@2.9.0))(chokidar@5.0.0)(typescript@6.0.3))':
-    dependencies:
+  '@tn4consulting/shared-content-client@0.1.1': {}
+
+  '@tn4consulting/shared-federation-config@0.4.0(@angular-architects/native-federation@22.0.6(@angular/build@22.1.0(@angular/compiler-cli@22.1.0(@angular/compiler@22.1.0)(typescript@6.0.3))(@angular/compiler@22.1.0)(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/platform-browser@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)))(@types/node@24.13.3)(chokidar@5.0.0)(istanbul-lib-instrument@6.0.3)(jiti@2.7.0)(less@4.5.1)(postcss@8.5.25)(sass-embedded@1.100.0)(terser@5.49.0)(tslib@2.8.1)(typescript@6.0.3)(yaml@2.9.0))(chokidar@5.0.0)(typescript@6.0.3))(@softarc/native-federation@4.3.2(typescript@6.0.3))':
+    optionalDependencies:
       '@angular-architects/native-federation': 22.0.6(@angular/build@22.1.0(@angular/compiler-cli@22.1.0(@angular/compiler@22.1.0)(typescript@6.0.3))(@angular/compiler@22.1.0)(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/platform-browser@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)))(@types/node@24.13.3)(chokidar@5.0.0)(istanbul-lib-instrument@6.0.3)(jiti@2.7.0)(less@4.5.1)(postcss@8.5.25)(sass-embedded@1.100.0)(terser@5.49.0)(tslib@2.8.1)(typescript@6.0.3)(yaml@2.9.0))(chokidar@5.0.0)(typescript@6.0.3)
+      '@softarc/native-federation': 4.3.2(typescript@6.0.3)
 
   '@tn4consulting/shared-i18n@0.1.2(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@jsverse/transloco@8.4.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2)(typescript@6.0.3))':
     dependencies:
@@ -11211,7 +11365,24 @@ snapshots:
       '@jsverse/transloco': 8.4.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2)(typescript@6.0.3)
       tslib: 2.8.1
 
-  '@tn4consulting/shared-runtime-config@0.1.2': {}
+  '@tn4consulting/shared-runtime-config@0.1.4': {}
+
+  '@tn4consulting/shared-session-cache@0.1.0':
+    dependencies:
+      ioredis: 5.11.1
+    transitivePeerDependencies:
+      - supports-color
+
+  '@tn4consulting/shared-ui-scds-core@0.2.0': {}
+
+  '@tn4consulting/shared-ui-scds@0.2.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@gcds-core/components-angular@1.4.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@gcds-core/components@1.4.0))(@tn4consulting/shared-ui-scds-core@0.2.0)(rxjs@7.8.2)':
+    dependencies:
+      '@angular/common': 22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@angular/core': 22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)
+      '@gcds-core/components-angular': 1.4.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@gcds-core/components@1.4.0)
+      '@tn4consulting/shared-ui-scds-core': 0.2.0
+      rxjs: 7.8.2
+      tslib: 2.8.1
 
   '@tsconfig/node10@1.0.12': {}
 
@@ -12132,6 +12303,8 @@ snapshots:
 
   clone@1.0.4: {}
 
+  cluster-key-slot@1.1.1: {}
+
   co@4.6.0: {}
 
   collect-v8-coverage@1.0.3: {}
@@ -12397,6 +12570,8 @@ snapshots:
   define-lazy-prop@2.0.0: {}
 
   delayed-stream@1.0.0: {}
+
+  denque@2.1.0: {}
 
   depd@2.0.0: {}
 
@@ -13239,6 +13414,18 @@ snapshots:
       wrappy: 1.0.2
 
   inherits@2.0.4: {}
+
+  ioredis@5.11.1:
+    dependencies:
+      '@ioredis/commands': 1.10.0
+      cluster-key-slot: 1.1.1
+      debug: 4.4.3(supports-color@7.2.0)
+      denque: 2.1.0
+      redis-errors: 1.2.0
+      redis-parser: 3.0.0
+      standard-as-callback: 2.1.0
+    transitivePeerDependencies:
+      - supports-color
 
   ip-address@10.4.0: {}
 
@@ -15098,6 +15285,12 @@ snapshots:
 
   readdirp@5.0.0: {}
 
+  redis-errors@1.2.0: {}
+
+  redis-parser@3.0.0:
+    dependencies:
+      redis-errors: 1.2.0
+
   reflect-metadata@0.2.2: {}
 
   regenerate-unicode-properties@10.2.2:
@@ -15522,6 +15715,8 @@ snapshots:
   stack-utils@2.0.6:
     dependencies:
       escape-string-regexp: 2.0.0
+
+  standard-as-callback@2.1.0: {}
 
   statuses@2.0.2: {}
 

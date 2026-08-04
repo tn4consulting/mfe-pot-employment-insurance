@@ -6,10 +6,18 @@ import {
 import { clearSession, createMockSession, storeSession } from '@tn4consulting/shared-auth';
 import { EmploymentInsuranceFeatureClaims } from './employment-insurance-feature-claims';
 
+// scds-card renders its title/description into its own shadow DOM (a real
+// custom element, not an Angular template) on a tick outside Angular's
+// change detection -- both need to be awaited/queried through shadowRoot.
+function waitForRender(): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, 20));
+}
+
 describe('EmploymentInsuranceFeatureClaims', () => {
   const apiClient: jest.Mocked<EmploymentInsuranceApiClient> = {
     applyForEi: jest.fn(),
     getClaim: jest.fn(),
+    getReportingStatus: jest.fn(),
     submitReport: jest.fn(),
   };
 
@@ -36,8 +44,10 @@ describe('EmploymentInsuranceFeatureClaims', () => {
     const fixture = TestBed.createComponent(EmploymentInsuranceFeatureClaims);
     await fixture.componentInstance.ngOnInit();
     fixture.detectChanges();
+    await waitForRender();
 
-    expect((fixture.nativeElement as HTMLElement).textContent).toContain('claim-1');
+    const card = (fixture.nativeElement as HTMLElement).querySelector('scds-card');
+    expect(card?.shadowRoot?.textContent).toContain('claim-1');
   });
 
   it('shows a no-claim state when there is none on file', async () => {

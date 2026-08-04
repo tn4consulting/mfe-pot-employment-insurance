@@ -1,5 +1,5 @@
 import { InjectionToken } from '@angular/core';
-import { EiClaim, EiReport } from './models';
+import { EiClaim, EiReport, EiReportingStatus } from './models';
 
 /**
  * Employment Insurance's feature libraries depend on this abstraction, not
@@ -9,6 +9,7 @@ import { EiClaim, EiReport } from './models';
 export interface EmploymentInsuranceApiClient {
   applyForEi(applicantSub: string): Promise<EiClaim>;
   getClaim(applicantSub: string): Promise<EiClaim | null>;
+  getReportingStatus(applicantSub: string): Promise<EiReportingStatus | null>;
   submitReport(
     claimId: string,
     applicantSub: string,

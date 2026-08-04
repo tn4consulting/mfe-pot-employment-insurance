@@ -1,4 +1,12 @@
 @if (hasAccess()) {
+  @if (intro(); as content) {
+    <section>
+      <h1>{{ content.title }}</h1>
+      <p>{{ content.body }}</p>
+    </section>
+  } @else if (introLoadError()) {
+    <p role="alert">Page content is temporarily unavailable.</p>
+  }
   <lib-employment-insurance-feature-applications></lib-employment-insurance-feature-applications>
   <lib-employment-insurance-feature-claims></lib-employment-insurance-feature-claims>
   <lib-employment-insurance-feature-reporting></lib-employment-insurance-feature-reporting>

@@ -1,8 +1,9 @@
 module.exports = {
-  displayName: 'employment-insurance',
+  displayName: 'employment-insurance-feature-reporting-status',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../coverage/apps/employment-insurance',
+  coverageDirectory:
+    '../../coverage/libs/feature-reporting-status',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

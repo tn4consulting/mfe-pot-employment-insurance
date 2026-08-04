@@ -6,10 +6,21 @@ import {
 import { clearSession, createMockSession, storeSession } from '@tn4consulting/shared-auth';
 import { EmploymentInsuranceFeatureApplications } from './employment-insurance-feature-applications';
 
+// scds-card renders its title/description into its own shadow DOM (a real
+// custom element, not an Angular template) on a tick outside Angular's
+// change detection -- both need to be awaited/queried through shadowRoot.
+// role="status" is a plain, un-@Prop()'d attribute, so it stays on the host
+// element same as any other custom element -- verified via the querySelector
+// below rather than assumed.
+function waitForRender(): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, 20));
+}
+
 describe('EmploymentInsuranceFeatureApplications', () => {
   const apiClient: jest.Mocked<EmploymentInsuranceApiClient> = {
     applyForEi: jest.fn(),
     getClaim: jest.fn(),
+    getReportingStatus: jest.fn(),
     submitReport: jest.fn(),
   };
 
@@ -38,10 +49,13 @@ describe('EmploymentInsuranceFeatureApplications', () => {
 
     await fixture.componentInstance.apply();
     fixture.detectChanges();
+    await waitForRender();
 
     expect(apiClient.applyForEi).toHaveBeenCalledWith('mock-citizen-001');
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('[role="status"]')?.textContent).toContain('claim-1');
+    const card = compiled.querySelector('[role="status"]');
+    expect(card?.tagName.toLowerCase()).toBe('scds-card');
+    expect((card as HTMLElement)?.shadowRoot?.textContent).toContain('claim-1');
   });
 
   it('shows an error state when the application fails', async () => {

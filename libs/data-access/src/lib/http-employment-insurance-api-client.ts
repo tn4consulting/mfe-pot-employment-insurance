@@ -1,5 +1,5 @@
 import { EmploymentInsuranceApiClient } from './employment-insurance-api-client';
-import { EiClaim, EiReport } from './models';
+import { EiClaim, EiReport, EiReportingStatus } from './models';
 
 /** Local dev / integration tests: calls the real employment-insurance-bff over HTTP. */
 export class HttpEmploymentInsuranceApiClient implements EmploymentInsuranceApiClient {
@@ -28,6 +28,19 @@ export class HttpEmploymentInsuranceApiClient implements EmploymentInsuranceApiC
       throw new Error(`employment-insurance-bff returned ${response.status} for /api/claims`);
     }
     return (await response.json()) as EiClaim;
+  }
+
+  async getReportingStatus(applicantSub: string): Promise<EiReportingStatus | null> {
+    const url = new URL(`${this.baseUrl}/api/reporting-status`);
+    url.searchParams.set('applicantSub', applicantSub);
+    const response = await fetch(url);
+    if (response.status === 404) {
+      return null;
+    }
+    if (!response.ok) {
+      throw new Error(`employment-insurance-bff returned ${response.status} for /api/reporting-status`);
+    }
+    return (await response.json()) as EiReportingStatus;
   }
 
   async submitReport(

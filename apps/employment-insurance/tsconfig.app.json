@@ -9,6 +9,7 @@
     "../../libs/feature-applications/src/index.ts",
     "../../libs/feature-claims/src/index.ts",
     "../../libs/feature-reporting/src/index.ts",
+    "../../libs/feature-reporting-status/src/index.ts",
     "../../libs/data-access/src/index.ts"
   ],
   "exclude": [

@@ -11,6 +11,7 @@ export default withNativeFederation({
   exposes: {
     './Component': './apps/employment-insurance/src/app/app.ts',
     './RemoteProviders': './apps/employment-insurance/src/app/remote-providers.ts',
+    './EiReportingStatusWidget': './libs/feature-reporting-status/src/index.ts',
   },
 
   shared: sharedFederationDependencies,

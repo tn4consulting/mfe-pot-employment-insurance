@@ -38,6 +38,31 @@ describe('HttpEmploymentInsuranceApiClient', () => {
     expect(claim?.id).toBe('claim-1');
   });
 
+  it('returns null when there is no claim on file for reporting status', async () => {
+    global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 404 }) as unknown as typeof fetch;
+    const status = await client.getReportingStatus('mock-citizen-001');
+    expect(status).toBeNull();
+  });
+
+  it('throws for other non-2xx reporting-status responses', async () => {
+    global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 500 }) as unknown as typeof fetch;
+    await expect(client.getReportingStatus('mock-citizen-001')).rejects.toThrow('500');
+  });
+
+  it('returns the reporting status when found', async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        claimId: 'claim-1',
+        nextReportDue: '2026-07-22T00:00:00.000Z',
+        daysUntilDue: 7,
+        status: 'not_yet_due',
+      }),
+    }) as unknown as typeof fetch;
+    const status = await client.getReportingStatus('mock-citizen-001');
+    expect(status).toMatchObject({ claimId: 'claim-1', status: 'not_yet_due' });
+  });
+
   it('submits a biweekly report', async () => {
     global.fetch = jest.fn().mockResolvedValue({
       ok: true,
