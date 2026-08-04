@@ -1,6 +1,7 @@
 import cors from 'cors';
 import express, { Express } from 'express';
-import { sessionCache } from './config';
+import { verifyBearerToken, whoamiHandler } from '@tn4consulting/shared-auth-server';
+import { mockIdp, sessionCache } from './config';
 import { createClaim, createReport, getClaim, getReports } from './data';
 import { computeReportingStatus } from './reporting-status';
 
@@ -76,6 +77,17 @@ export function createApp(): Express {
         await createReport(claimId, applicantSub, periodStart, periodEnd, workedHours ?? 0, earnings ?? 0),
       );
   });
+
+  // Proves identity (including the SIN custom claim) actually propagated
+  // from mock-idp through the browser and was independently verified here
+  // -- see mfe-pot's plan doc. Mounted only on this one route, not globally:
+  // the domain routes above are single-persona stub data not yet keyed by
+  // sub (a bigger, separate scope item).
+  app.get(
+    '/api/whoami',
+    verifyBearerToken({ jwksUrl: mockIdp.jwksUrl, issuer: mockIdp.issuer, audience: mockIdp.audience }),
+    whoamiHandler,
+  );
 
   // PoT-only, no auth -- unlocks a repeatable `pnpm demo:reset` (see
   // mfe-pot/TODO.md) by clearing this BFF's own Redis-backed state between

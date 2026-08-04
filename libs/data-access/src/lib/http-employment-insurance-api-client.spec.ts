@@ -1,3 +1,4 @@
+import { clearSession, storeSession } from '@tn4consulting/shared-auth';
 import { HttpEmploymentInsuranceApiClient } from './http-employment-insurance-api-client';
 
 describe('HttpEmploymentInsuranceApiClient', () => {
@@ -6,6 +7,39 @@ describe('HttpEmploymentInsuranceApiClient', () => {
 
   afterEach(() => {
     global.fetch = originalFetch;
+    clearSession();
+  });
+
+  it('attaches the mock-idp access token as a Bearer header when signed in', async () => {
+    storeSession({
+      sub: 'citizen-abc123',
+      name: 'Alex Chen',
+      claims: [],
+      issuedAt: Date.now(),
+      expiresAt: Date.now() + 60_000,
+      accessToken: 'real-looking.jwt.value',
+    });
+    const fetchMock = jest
+      .fn()
+      .mockResolvedValue({ ok: true, json: async () => ({ id: 'claim-1', status: 'approved' }) });
+    global.fetch = fetchMock as unknown as typeof fetch;
+
+    await client.applyForEi('citizen-abc123');
+
+    const [, options] = fetchMock.mock.calls[0];
+    expect((options.headers as Record<string, string>)['Authorization']).toBe('Bearer real-looking.jwt.value');
+  });
+
+  it('omits the Authorization header when not signed in', async () => {
+    const fetchMock = jest
+      .fn()
+      .mockResolvedValue({ ok: true, json: async () => ({ id: 'claim-1', status: 'approved' }) });
+    global.fetch = fetchMock as unknown as typeof fetch;
+
+    await client.applyForEi('citizen-abc123');
+
+    const [, options] = fetchMock.mock.calls[0];
+    expect((options.headers as Record<string, string>)['Authorization']).toBeUndefined();
   });
 
   it('applies for EI', async () => {

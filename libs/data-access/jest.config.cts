@@ -12,7 +12,10 @@ module.exports = {
       },
     ],
   },
-  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
+  // @tn4consulting/shared-auth ships ESM-only (see CLAUDE.md's "Monorepo ->
+  // per-app repos" gotcha) -- this lib's Http*ApiClient now imports
+  // getAccessToken from it to attach the mock-idp bearer token.
+  transformIgnorePatterns: ['node_modules/(?!\\.pnpm|@tn4consulting/|.*\\.mjs$)'],
   snapshotSerializers: [
     'jest-preset-angular/build/serializers/no-ng-attributes',
     'jest-preset-angular/build/serializers/ng-snapshot',
