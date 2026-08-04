@@ -59,8 +59,11 @@ importers:
         specifier: ^4.43.5
         version: 4.43.5
       '@tn4consulting/shared-auth':
-        specifier: ^0.1.1
-        version: 0.1.1(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/router@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/platform-browser@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)))(rxjs@7.8.2))
+        specifier: ^0.3.0
+        version: 0.3.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/router@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/platform-browser@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)))(rxjs@7.8.2))
+      '@tn4consulting/shared-auth-server':
+        specifier: ^0.1.0
+        version: 0.1.0(express@5.2.1)
       '@tn4consulting/shared-content-client':
         specifier: ^0.1.1
         version: 0.1.1
@@ -3536,8 +3539,13 @@ packages:
     resolution: {integrity: sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg==}
     engines: {node: '>=12'}
 
-  '@tn4consulting/shared-auth@0.1.1':
-    resolution: {integrity: sha512-M5RFrWL3UXe2VzTHgpUS2fccRRZNwkgwzQ/MSdEMBEsyBZ2QHZ8NQ9Tnm46oOe7qOFcZQ98O/DmECzICBrF5hw==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-auth/0.1.1/f46b3f3b37d7c3d95e0f13b4d61ed71c5aa2f85d}
+  '@tn4consulting/shared-auth-server@0.1.0':
+    resolution: {integrity: sha512-EIpumoO3HWxB4nQXNnJXZZhoREvGFjggTAUVf2C2tD0E1piXi96KkhEUdAYb+NhOi9QCFzZEp30fPrDjMcd1dA==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-auth-server/0.1.0/9364674230e00601dd407e08de06722a7f342f65}
+    peerDependencies:
+      express: '>=5.0.0'
+
+  '@tn4consulting/shared-auth@0.3.0':
+    resolution: {integrity: sha512-RwKCJ1F8w/EzT4oksZInx7ekUjBeERWqL0XdFTXS42nERTQsNsQ8q0LyQZt6SiOz6Z6MG7/odCRZX+fxp+mjGA==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-auth/0.3.0/fe6791ee74ba00c43ffd46bee8290c6ed9fccfae}
     peerDependencies:
       '@angular/core': 22.1.0
       '@angular/router': 22.1.0
@@ -11346,7 +11354,12 @@ snapshots:
 
   '@tanstack/table-core@8.21.3': {}
 
-  '@tn4consulting/shared-auth@0.1.1(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/router@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/platform-browser@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)))(rxjs@7.8.2))':
+  '@tn4consulting/shared-auth-server@0.1.0(express@5.2.1)':
+    dependencies:
+      express: 5.2.1
+      jose: 6.2.7
+
+  '@tn4consulting/shared-auth@0.3.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/router@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/platform-browser@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)))(rxjs@7.8.2))':
     dependencies:
       '@angular/core': 22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)
       '@angular/router': 22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/platform-browser@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)))(rxjs@7.8.2)
