@@ -74,8 +74,8 @@ importers:
         specifier: ^0.1.4
         version: 0.1.4
       '@tn4consulting/shared-session-cache':
-        specifier: file:../mfe-pot-platform/libs/shared/session-cache
-        version: file:../mfe-pot-platform/libs/shared/session-cache
+        specifier: ^0.1.0
+        version: 0.1.0
       '@tn4consulting/shared-ui-scds':
         specifier: ^0.2.0
         version: 0.2.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@gcds-core/components-angular@1.4.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@gcds-core/components@1.4.0))(@tn4consulting/shared-ui-scds-core@0.2.0)(rxjs@7.8.2)
@@ -3566,8 +3566,8 @@ packages:
   '@tn4consulting/shared-runtime-config@0.1.4':
     resolution: {integrity: sha512-gFSqm28XISQowq1maFjWuRNScXAE57EjRG4+KrpgDuQ0HTR1jMjQI0qWXySrf2/vBnyeZpZ0ATgnNG0Pr4UPrw==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-runtime-config/0.1.4/df515d211b976c6d9fa401e83f34ff5cd07412e3}
 
-  '@tn4consulting/shared-session-cache@file:../mfe-pot-platform/libs/shared/session-cache':
-    resolution: {directory: ../mfe-pot-platform/libs/shared/session-cache, type: directory}
+  '@tn4consulting/shared-session-cache@0.1.0':
+    resolution: {integrity: sha512-qLypYn/rWxHZfXb5Aug7ZTv+bbnTgZJPt0fswtHlF+Jj2I55q8/LsBAdBJCuZx7PLcHzzORj+XXgIAuKERzbsA==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-session-cache/0.1.0/7b08f687121dc57fd1f8dbef289705cff9180fa7}
 
   '@tn4consulting/shared-ui-scds-core@0.2.0':
     resolution: {integrity: sha512-yFFT7IGH6/Kbs5it2ib4cKWpSDjCOF3wD9AdIguh8OtAzIL15Swz/Y/eXY4+I3qpsiRQIBlh1HqJWY61CsFpew==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-ui-scds-core/0.2.0/710eecb4e8dffcffb48b97fe17d52a0f82132243}
@@ -11367,7 +11367,7 @@ snapshots:
 
   '@tn4consulting/shared-runtime-config@0.1.4': {}
 
-  '@tn4consulting/shared-session-cache@file:../mfe-pot-platform/libs/shared/session-cache':
+  '@tn4consulting/shared-session-cache@0.1.0':
     dependencies:
       ioredis: 5.11.1
     transitivePeerDependencies:
