@@ -99,4 +99,14 @@ describe('employment-insurance-bff', () => {
     expect(res.body.status).toBe('not_yet_due');
     expect(res.body.daysUntilDue).toBeGreaterThan(14);
   });
+
+  it('clears claims for a sub after /api/reset', async () => {
+    await request(app).post('/api/applications').send({ applicantSub: 'mock-citizen-reset' });
+
+    const resetRes = await request(app).post('/api/reset');
+    expect(resetRes.status).toBe(204);
+
+    const res = await request(app).get('/api/claims').query({ applicantSub: 'mock-citizen-reset' });
+    expect(res.status).toBe(404);
+  });
 });

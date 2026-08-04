@@ -1,3 +1,6 @@
+import { randomUUID } from 'node:crypto';
+import { sessionCache } from './config';
+
 export type ClaimStatus = 'pending' | 'approved';
 
 export interface EiClaim {
@@ -19,39 +22,45 @@ export interface EiReport {
   submittedAt: string;
 }
 
-const claims: EiClaim[] = [];
-const reports: EiReport[] = [];
-
-export function createClaim(applicantSub: string): EiClaim {
+export async function createClaim(applicantSub: string): Promise<EiClaim> {
+  const key = sessionCache.buildKey('claims', applicantSub);
+  const existing = (await sessionCache.getJson<EiClaim[]>(key)) ?? [];
   const claim: EiClaim = {
-    id: `claim-${claims.length + 1}`,
+    // Not `claim-${claims.length + 1}` -- an id derived from array length
+    // breaks once state can outlive a single process (pod restart,
+    // multiple replicas), which is exactly what moving this into Redis
+    // makes possible.
+    id: randomUUID(),
     applicantSub,
     status: 'approved',
     weeklyBenefitAmount: 638.0,
     appliedAt: new Date().toISOString(),
   };
-  claims.push(claim);
+  await sessionCache.setJson(key, [...existing, claim]);
   return claim;
 }
 
-export function getClaim(applicantSub: string): EiClaim | undefined {
-  return [...claims].reverse().find((claim) => claim.applicantSub === applicantSub);
+export async function getClaim(applicantSub: string): Promise<EiClaim | undefined> {
+  const claims = (await sessionCache.getJson<EiClaim[]>(sessionCache.buildKey('claims', applicantSub))) ?? [];
+  return [...claims].reverse()[0];
 }
 
-export function getReports(claimId: string): EiReport[] {
-  return reports.filter((report) => report.claimId === claimId);
+export async function getReports(claimId: string): Promise<EiReport[]> {
+  return (await sessionCache.getJson<EiReport[]>(sessionCache.buildKey('reports', claimId))) ?? [];
 }
 
-export function createReport(
+export async function createReport(
   claimId: string,
   applicantSub: string,
   periodStart: string,
   periodEnd: string,
   workedHours: number,
   earnings: number,
-): EiReport {
+): Promise<EiReport> {
+  const key = sessionCache.buildKey('reports', claimId);
+  const existing = (await sessionCache.getJson<EiReport[]>(key)) ?? [];
   const report: EiReport = {
-    id: `report-${reports.length + 1}`,
+    id: randomUUID(),
     applicantSub,
     claimId,
     periodStart,
@@ -60,6 +69,6 @@ export function createReport(
     earnings,
     submittedAt: new Date().toISOString(),
   };
-  reports.push(report);
+  await sessionCache.setJson(key, [...existing, report]);
   return report;
 }
