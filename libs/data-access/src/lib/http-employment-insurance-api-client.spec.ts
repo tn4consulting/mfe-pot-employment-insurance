@@ -1,4 +1,4 @@
-import { clearSession, storeSession } from '@tn4consulting/shared-auth';
+import { clearSession, storeSession } from '@tn4consulting/shared-auth/core';
 import { HttpEmploymentInsuranceApiClient } from './http-employment-insurance-api-client';
 
 describe('HttpEmploymentInsuranceApiClient', () => {

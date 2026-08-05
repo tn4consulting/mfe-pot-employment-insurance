@@ -1,10 +1,14 @@
-import { InjectionToken } from '@angular/core';
 import { EiClaim, EiReport, EiReportingStatus } from './models';
 
 /**
- * Employment Insurance's feature libraries depend on this abstraction, not
- * a concrete HTTP implementation directly -- see CLAUDE.md's "Apps are
- * thin, libraries hold the real functionality" section.
+ * Employment Insurance's feature components depend on this abstraction,
+ * never on a concrete HTTP implementation directly -- see CLAUDE.md's
+ * "Apps are thin, libraries hold the real functionality" section.
+ *
+ * No Angular `InjectionToken` here (unlike this file's pre-React-port
+ * history) -- App.tsx passes the concrete client down as a plain prop,
+ * not through Angular DI, and this library must stay resolvable from a
+ * bundle with no Angular installed at all.
  */
 export interface EmploymentInsuranceApiClient {
   applyForEi(applicantSub: string): Promise<EiClaim>;
@@ -19,7 +23,3 @@ export interface EmploymentInsuranceApiClient {
     earnings: number,
   ): Promise<EiReport>;
 }
-
-export const EMPLOYMENT_INSURANCE_API_CLIENT = new InjectionToken<EmploymentInsuranceApiClient>(
-  'EMPLOYMENT_INSURANCE_API_CLIENT',
-);

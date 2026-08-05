@@ -1,4 +1,4 @@
-import { getAccessToken } from '@tn4consulting/shared-auth';
+import { getAccessToken } from '@tn4consulting/shared-auth/core';
 import { EmploymentInsuranceApiClient } from './employment-insurance-api-client';
 import { EiClaim, EiReport, EiReportingStatus } from './models';
 
