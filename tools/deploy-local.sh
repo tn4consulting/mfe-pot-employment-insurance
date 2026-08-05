@@ -67,6 +67,17 @@ helm upgrade --install employment-insurance charts/employment-insurance \
   -f charts/employment-insurance/values-kind.yaml \
   --wait --timeout 120s
 
+# values-kind.yaml pins static image tags with pullPolicy: Never, so
+# rebuilt images loaded above under the same tags don't change either
+# Deployment's pod spec -- Helm sees no diff and Kubernetes has no signal
+# to restart the already-running pods, which keep serving OLD image
+# content indefinitely (confirmed the hard way: a redeploy silently kept
+# serving a pre-fix build). Force both deployments explicitly every run.
+echo "==> Restarting deployments to pick up the freshly built images..."
+kubectl rollout restart deployment/employment-insurance deployment/employment-insurance-bff
+kubectl rollout status deployment/employment-insurance --timeout=60s
+kubectl rollout status deployment/employment-insurance-bff --timeout=60s
+
 echo "==> Waiting for ingress..."
 status=000
 for i in $(seq 1 30); do
