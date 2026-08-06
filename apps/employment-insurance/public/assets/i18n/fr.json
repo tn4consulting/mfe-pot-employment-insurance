@@ -1,14 +1,5 @@
 {
   "auth": {
     "signInRequired": "Vous devez ouvrir une session pour gérer votre assurance-emploi."
-  },
-  "reportingStatus": {
-    "heading": "État de la déclaration d'assurance-emploi",
-    "notYetDue": "Pas encore requise",
-    "dueSoon": "Bientôt requise",
-    "overdue": "En retard",
-    "nextReportDue": "Prochaine déclaration due le {{date}} ({{days}} jours)",
-    "noClaim": "Aucune demande d'assurance-emploi active au dossier.",
-    "unavailable": "L'état de la déclaration d'assurance-emploi est temporairement indisponible."
   }
 }

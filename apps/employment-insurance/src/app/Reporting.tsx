@@ -1,19 +1,43 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { getStoredSession } from '@tn4consulting/shared-auth/core';
+import type { ContentClient } from '@tn4consulting/shared-content-client';
+import { fillTemplate } from '@tn4consulting/shared-content-client';
+import type { Locale } from '@tn4consulting/shared-i18n';
 import type { EiReport, EmploymentInsuranceApiClient } from 'employment-insurance-data-access';
+import { REPORTING_CONTENT_KEYS } from './content-client';
+import { usePageContents } from './use-page-contents';
+
+// Rendered until the CMS batch fetch resolves -- never blank, same bar
+// StaticContentClient already meets as the no-CMS fallback.
+const FALLBACK: Record<(typeof REPORTING_CONTENT_KEYS)[number], string> = {
+  'employment-insurance.reporting.heading': 'Submit your EI report',
+  'employment-insurance.reporting.error': 'EI reporting is temporarily unavailable.',
+  'employment-insurance.reporting.noClaim': 'You need an active EI claim before you can submit a report.',
+  'employment-insurance.reporting.hoursLabel': 'Hours worked this period',
+  'employment-insurance.reporting.earningsLabel': 'Earnings this period ($)',
+  'employment-insurance.reporting.submitButton': 'Submit report',
+  'employment-insurance.reporting.confirmation': 'Report {id} submitted for {periodStart} to {periodEnd}.',
+};
 
 export interface ReportingProps {
   apiClient: EmploymentInsuranceApiClient;
+  contentClient: ContentClient;
+  locale: Locale;
 }
 
-export function Reporting({ apiClient }: ReportingProps) {
+export function Reporting({ apiClient, contentClient, locale }: ReportingProps) {
   const [claimId, setClaimId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [confirmation, setConfirmation] = useState<EiReport | null>(null);
   const [reportError, setReportError] = useState(false);
   const [workedHours, setWorkedHours] = useState(0);
   const [earnings, setEarnings] = useState(0);
+  const content = usePageContents(contentClient, REPORTING_CONTENT_KEYS, locale);
+
+  function label(key: (typeof REPORTING_CONTENT_KEYS)[number]): string {
+    return content[key]?.title ?? FALLBACK[key];
+  }
 
   useEffect(() => {
     const session = getStoredSession();
@@ -62,18 +86,22 @@ export function Reporting({ apiClient }: ReportingProps) {
 
   return (
     <section className="ei-reporting">
-      <h2>Submit your EI report</h2>
+      <h2>{label('employment-insurance.reporting.heading')}</h2>
       {confirmation ? (
         <p role="status">
-          Report {confirmation.id} submitted for {confirmation.periodStart} to {confirmation.periodEnd}.
+          {fillTemplate(label('employment-insurance.reporting.confirmation'), {
+            id: confirmation.id,
+            periodStart: confirmation.periodStart,
+            periodEnd: confirmation.periodEnd,
+          })}
         </p>
       ) : reportError ? (
-        <p role="alert">EI reporting is temporarily unavailable.</p>
+        <p role="alert">{label('employment-insurance.reporting.error')}</p>
       ) : !claimId ? (
-        <p>You need an active EI claim before you can submit a report.</p>
+        <p>{label('employment-insurance.reporting.noClaim')}</p>
       ) : (
         <>
-          <label htmlFor="ei-worked-hours">Hours worked this period</label>
+          <label htmlFor="ei-worked-hours">{label('employment-insurance.reporting.hoursLabel')}</label>
           <input
             id="ei-worked-hours"
             type="number"
@@ -82,7 +110,7 @@ export function Reporting({ apiClient }: ReportingProps) {
             value={workedHours}
             onChange={(event) => setWorkedHours(event.target.valueAsNumber || 0)}
           />
-          <label htmlFor="ei-earnings">Earnings this period ($)</label>
+          <label htmlFor="ei-earnings">{label('employment-insurance.reporting.earningsLabel')}</label>
           <input
             id="ei-earnings"
             type="number"
@@ -92,7 +120,7 @@ export function Reporting({ apiClient }: ReportingProps) {
             onChange={(event) => setEarnings(event.target.valueAsNumber || 0)}
           />
           <button type="button" disabled={submitting} onClick={() => void submit()}>
-            Submit report
+            {label('employment-insurance.reporting.submitButton')}
           </button>
         </>
       )}

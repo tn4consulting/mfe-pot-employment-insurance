@@ -5,28 +5,17 @@ import { ReportingStatus } from './ReportingStatus';
 
 jest.mock('./asset-base-url', () => ({ assetBaseUrl: 'http://localhost:4204/' }));
 jest.mock('../runtime-config', () => ({
-  loadRuntimeConfig: jest.fn().mockResolvedValue({ employmentInsuranceBffBaseUrl: 'http://localhost:3002' }),
+  loadRuntimeConfig: jest
+    .fn()
+    .mockResolvedValue({ employmentInsuranceBffBaseUrl: 'http://localhost:3002', strapiBaseUrl: undefined }),
 }));
 
 describe('ReportingStatus', () => {
   beforeEach(() => {
+    // No strapiBaseUrl configured above, so content comes from
+    // StaticContentClient's baked English fallback (content-client.ts) --
+    // no fetch mock needed for content, only for the BFF's own API call.
     global.fetch = jest.fn((url: string) => {
-      if (url.toString().includes('assets/i18n')) {
-        return Promise.resolve({
-          json: () =>
-            Promise.resolve({
-              reportingStatus: {
-                heading: 'EI Reporting Status',
-                notYetDue: 'Not yet due',
-                dueSoon: 'Due soon',
-                overdue: 'Overdue',
-                nextReportDue: 'Next report due {{date}} ({{days}} days)',
-                noClaim: 'No active EI claim on file.',
-                unavailable: 'EI reporting status is temporarily unavailable.',
-              },
-            }),
-        });
-      }
       if (url.toString().includes('/api/reporting-status')) {
         return Promise.resolve({
           ok: true,
@@ -68,12 +57,6 @@ describe('ReportingStatus', () => {
   it('shows a no-claim message when there is a session but no active claim', async () => {
     storeSession(createMockSession());
     (global.fetch as jest.Mock).mockImplementation((url: string) => {
-      if (url.toString().includes('assets/i18n')) {
-        return Promise.resolve({
-          json: () =>
-            Promise.resolve({ reportingStatus: { heading: 'EI Reporting Status', noClaim: 'No active EI claim on file.' } }),
-        });
-      }
       if (url.toString().includes('/api/reporting-status')) {
         // HttpEmploymentInsuranceApiClient.getReportingStatus maps a 404
         // specifically to `null` (a legitimate "no claim yet" state, not

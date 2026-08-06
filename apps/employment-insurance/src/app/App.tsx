@@ -102,9 +102,9 @@ export function App() {
       ) : introLoadError ? (
         <p role="alert">Page content is temporarily unavailable.</p>
       ) : null}
-      <Applications apiClient={config.apiClient} />
-      <Claims apiClient={config.apiClient} />
-      <Reporting apiClient={config.apiClient} />
+      <Applications apiClient={config.apiClient} contentClient={config.contentClient} locale={locale} />
+      <Claims apiClient={config.apiClient} contentClient={config.contentClient} locale={locale} />
+      <Reporting apiClient={config.apiClient} contentClient={config.contentClient} locale={locale} />
     </>
   );
 }

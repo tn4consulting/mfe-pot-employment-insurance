@@ -13,14 +13,40 @@ jest.mock('../runtime-config', () => ({
 }));
 
 const getPageContentMock = jest.fn();
+const getPageContentsMock = jest.fn();
 jest.mock('./content-client', () => ({
   INTRO_CONTENT_KEY: 'employment-insurance.intro',
-  createContentClient: () => ({ getPageContent: getPageContentMock }),
+  CLAIMS_CONTENT_KEYS: [
+    'employment-insurance.claims.heading',
+    'employment-insurance.claims.error',
+    'employment-insurance.claims.cardTitle',
+    'employment-insurance.claims.status',
+    'employment-insurance.claims.empty',
+  ],
+  APPLICATIONS_CONTENT_KEYS: [
+    'employment-insurance.applications.heading',
+    'employment-insurance.applications.intro',
+    'employment-insurance.applications.button',
+    'employment-insurance.applications.confirmationDescription',
+    'employment-insurance.applications.error',
+    'employment-insurance.claims.cardTitle',
+  ],
+  REPORTING_CONTENT_KEYS: [
+    'employment-insurance.reporting.heading',
+    'employment-insurance.reporting.error',
+    'employment-insurance.reporting.noClaim',
+    'employment-insurance.reporting.hoursLabel',
+    'employment-insurance.reporting.earningsLabel',
+    'employment-insurance.reporting.submitButton',
+    'employment-insurance.reporting.confirmation',
+  ],
+  createContentClient: () => ({ getPageContent: getPageContentMock, getPageContents: getPageContentsMock }),
 }));
 
 describe('App', () => {
   beforeEach(() => {
     getPageContentMock.mockReset().mockResolvedValue(null);
+    getPageContentsMock.mockReset().mockResolvedValue({});
     global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 404 }) as unknown as typeof fetch;
   });
 

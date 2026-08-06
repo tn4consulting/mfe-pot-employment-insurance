@@ -2,8 +2,14 @@ import * as React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { clearSession, createMockSession, storeSession } from '@tn4consulting/shared-auth/core';
+import type { ContentClient } from '@tn4consulting/shared-content-client';
 import type { EmploymentInsuranceApiClient } from 'employment-insurance-data-access';
 import { Reporting } from './Reporting';
+
+const contentClient: ContentClient = {
+  getPageContent: jest.fn().mockResolvedValue(null),
+  getPageContents: jest.fn().mockResolvedValue({}),
+};
 
 function fakeApiClient(overrides: Partial<EmploymentInsuranceApiClient> = {}): EmploymentInsuranceApiClient {
   return {
@@ -22,7 +28,7 @@ describe('Reporting', () => {
     storeSession(createMockSession());
     const apiClient = fakeApiClient({ getClaim: jest.fn().mockResolvedValue(null) });
 
-    render(<Reporting apiClient={apiClient} />);
+    render(<Reporting apiClient={apiClient} contentClient={contentClient} locale="en" />);
 
     expect(await screen.findByText(/You need an active EI claim/)).toBeInTheDocument();
   });
@@ -45,7 +51,7 @@ describe('Reporting', () => {
       }),
     });
 
-    render(<Reporting apiClient={apiClient} />);
+    render(<Reporting apiClient={apiClient} contentClient={contentClient} locale="en" />);
     await screen.findByLabelText('Hours worked this period');
     await userEvent.click(screen.getByRole('button', { name: 'Submit report' }));
 

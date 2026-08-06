@@ -1,11 +1,15 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { getStoredSession } from '@tn4consulting/shared-auth/core';
-import { useLocale, useTranslations } from '@tn4consulting/shared-i18n';
+import { useLocale } from '@tn4consulting/shared-i18n';
+import type { ContentClient } from '@tn4consulting/shared-content-client';
+import { fillTemplate } from '@tn4consulting/shared-content-client';
 import type { EiReportingStatus, EiReportingStatusLabel, EmploymentInsuranceApiClient } from 'employment-insurance-data-access';
 import { HttpEmploymentInsuranceApiClient } from 'employment-insurance-data-access';
 import { assetBaseUrl } from './asset-base-url';
 import { loadRuntimeConfig } from '../runtime-config';
+import { REPORTING_STATUS_CONTENT_KEYS, createContentClient } from './content-client';
+import { usePageContents } from './use-page-contents';
 
 const STATUS_TONE: Record<EiReportingStatusLabel, 'warning' | 'danger' | undefined> = {
   not_yet_due: undefined,
@@ -13,35 +17,53 @@ const STATUS_TONE: Record<EiReportingStatusLabel, 'warning' | 'danger' | undefin
   overdue: 'danger',
 };
 
-const STATUS_LABEL_KEY: Record<EiReportingStatusLabel, string> = {
-  not_yet_due: 'reportingStatus.notYetDue',
-  due_soon: 'reportingStatus.dueSoon',
-  overdue: 'reportingStatus.overdue',
+const STATUS_CONTENT_KEY: Record<EiReportingStatusLabel, (typeof REPORTING_STATUS_CONTENT_KEYS)[number]> = {
+  not_yet_due: 'employment-insurance.reporting-status.notYetDue',
+  due_soon: 'employment-insurance.reporting-status.dueSoon',
+  overdue: 'employment-insurance.reporting-status.overdue',
+};
+
+// Rendered until the CMS batch fetch resolves -- never blank, same bar
+// StaticContentClient already meets as the no-CMS fallback.
+const FALLBACK: Record<(typeof REPORTING_STATUS_CONTENT_KEYS)[number], string> = {
+  'employment-insurance.reporting-status.heading': 'EI Reporting Status',
+  'employment-insurance.reporting-status.unavailable': 'EI reporting status is temporarily unavailable.',
+  'employment-insurance.reporting-status.noClaim': 'No active EI claim on file.',
+  'employment-insurance.reporting-status.notYetDue': 'Not yet due',
+  'employment-insurance.reporting-status.dueSoon': 'Due soon',
+  'employment-insurance.reporting-status.overdue': 'Overdue',
+  'employment-insurance.reporting-status.nextReportDue': 'Next report due {date} ({days} days)',
 };
 
 /**
  * Exposed as `./EiReportingStatusWidget` for dashboard to embed -- never
  * rendered by this app's own App.tsx. Fully self-configuring (fetches its
- * own runtime config, builds its own API client) since there's no host to
- * supply one -- same "every remote does its own setup" principle as
- * every other converted widget in this family. The one real Transloco
- * interpolation site in the whole family: `reportingStatus.nextReportDue`
- * takes a pre-formatted, locale-aware date string (computed here via
- * Intl.DateTimeFormat, not raw ISO) plus a raw day count.
+ * own runtime config, builds its own API client and content client) since
+ * there's no host to supply one -- same "every remote does its own setup"
+ * principle as every other converted widget in this family.
+ * `reportingStatus.nextReportDue` takes a pre-formatted, locale-aware date
+ * string (computed here via Intl.DateTimeFormat, not raw ISO) plus a raw
+ * day count, filled into the CMS template via `fillTemplate`.
  */
 export function ReportingStatus() {
   const locale = useLocale();
-  const { t } = useTranslations(assetBaseUrl, locale);
   const [apiClient, setApiClient] = useState<EmploymentInsuranceApiClient | null>(null);
+  const [contentClient, setContentClient] = useState<ContentClient | null>(null);
   const [reportingStatus, setReportingStatus] = useState<EiReportingStatus | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [loadError, setLoadError] = useState(false);
+  const content = usePageContents(contentClient, REPORTING_STATUS_CONTENT_KEYS, locale);
+
+  function label(key: (typeof REPORTING_STATUS_CONTENT_KEYS)[number]): string {
+    return content[key]?.title ?? FALLBACK[key];
+  }
 
   useEffect(() => {
     let cancelled = false;
     loadRuntimeConfig(assetBaseUrl).then((runtimeConfig) => {
       if (!cancelled) {
         setApiClient(new HttpEmploymentInsuranceApiClient(runtimeConfig.employmentInsuranceBffBaseUrl));
+        setContentClient(createContentClient(runtimeConfig.strapiBaseUrl));
       }
     });
     return () => {
@@ -85,21 +107,21 @@ export function ReportingStatus() {
 
   return (
     <section className="reporting-status">
-      <h2>{t('reportingStatus.heading')}</h2>
+      <h2>{label('employment-insurance.reporting-status.heading')}</h2>
       {loadError ? (
-        <p role="alert">{t('reportingStatus.unavailable')}</p>
+        <p role="alert">{label('employment-insurance.reporting-status.unavailable')}</p>
       ) : loaded ? (
         reportingStatus ? (
           <scds-card
-            card-title={t(STATUS_LABEL_KEY[reportingStatus.status])}
-            description={t('reportingStatus.nextReportDue', {
+            card-title={label(STATUS_CONTENT_KEY[reportingStatus.status])}
+            description={fillTemplate(label('employment-insurance.reporting-status.nextReportDue'), {
               date: formattedNextReportDue ?? '',
               days: reportingStatus.daysUntilDue,
             })}
             tone={STATUS_TONE[reportingStatus.status]}
           />
         ) : (
-          <p>{t('reportingStatus.noClaim')}</p>
+          <p>{label('employment-insurance.reporting-status.noClaim')}</p>
         )
       ) : null}
     </section>

@@ -1,20 +1,42 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { getStoredSession } from '@tn4consulting/shared-auth/core';
+import type { ContentClient } from '@tn4consulting/shared-content-client';
+import { fillTemplate } from '@tn4consulting/shared-content-client';
+import type { Locale } from '@tn4consulting/shared-i18n';
 import type { EiClaim, EmploymentInsuranceApiClient } from 'employment-insurance-data-access';
+import { CLAIMS_CONTENT_KEYS } from './content-client';
+import { usePageContents } from './use-page-contents';
+
+// Rendered until the CMS batch fetch resolves -- never blank, same bar
+// StaticContentClient already meets as the no-CMS fallback.
+const FALLBACK: Record<(typeof CLAIMS_CONTENT_KEYS)[number], string> = {
+  'employment-insurance.claims.heading': 'Claim status',
+  'employment-insurance.claims.error': 'Claim status is temporarily unavailable.',
+  'employment-insurance.claims.cardTitle': 'Claim {id}',
+  'employment-insurance.claims.status': 'Status: {status}.',
+  'employment-insurance.claims.empty': 'No claim on file yet.',
+};
 
 export interface ClaimsProps {
   apiClient: EmploymentInsuranceApiClient;
+  contentClient: ContentClient;
+  locale: Locale;
 }
 
 function claimTone(claim: EiClaim): 'success' | undefined {
   return claim.status === 'approved' ? 'success' : undefined;
 }
 
-export function Claims({ apiClient }: ClaimsProps) {
+export function Claims({ apiClient, contentClient, locale }: ClaimsProps) {
   const [claim, setClaim] = useState<EiClaim | null>(null);
   const [loadError, setLoadError] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const content = usePageContents(contentClient, CLAIMS_CONTENT_KEYS, locale);
+
+  function label(key: (typeof CLAIMS_CONTENT_KEYS)[number]): string {
+    return content[key]?.title ?? FALLBACK[key];
+  }
 
   useEffect(() => {
     const session = getStoredSession();
@@ -48,14 +70,18 @@ export function Claims({ apiClient }: ClaimsProps) {
 
   return (
     <section className="ei-claims">
-      <h2>Claim status</h2>
+      <h2>{label('employment-insurance.claims.heading')}</h2>
       {loadError ? (
-        <p role="alert">Claim status is temporarily unavailable.</p>
+        <p role="alert">{label('employment-insurance.claims.error')}</p>
       ) : loaded ? (
         claim ? (
-          <scds-card card-title={`Claim ${claim.id}`} description={`Status: ${claim.status}.`} tone={claimTone(claim)} />
+          <scds-card
+            card-title={fillTemplate(label('employment-insurance.claims.cardTitle'), { id: claim.id })}
+            description={fillTemplate(label('employment-insurance.claims.status'), { status: claim.status })}
+            tone={claimTone(claim)}
+          />
         ) : (
-          <p>No claim on file yet.</p>
+          <p>{label('employment-insurance.claims.empty')}</p>
         )
       ) : null}
     </section>
