@@ -4,7 +4,7 @@
 
 The **EI application, claim status, and EI reporting** frontend for the mfe-pot Government of Canada MFE proof-of-technology. Federated as a remote into `mfe-pot-msca-shell`; also exposes a standalone EI-reporting-status widget embedded directly into `mfe-pot-dashboard-mfe`'s overview. The second app extracted from the platform repo, following job-bank's proven recipe.
 
-**This repo doesn't carry its own architecture doc.** Full rationale — bilingual/WCAG/GCDS requirements, the Native Federation setup, the federation-sharing policy, security model, i18n mechanism, the BFF pattern, hosting/Helm pattern, and every non-obvious gotcha behind the code in this repo — lives in **`../mfe-pot-platform/CLAUDE.md`**. Read it before making any architectural change here; this file only covers what's specific to this repo. See `../CLAUDE.md` (the `mfe-pot` meta repo) for the full 7-repo map.
+**This repo doesn't carry its own architecture doc.** Full rationale — bilingual/WCAG/SCDS requirements, the Native Federation setup, the federation-sharing policy, security model, i18n mechanism, the BFF pattern, hosting/Helm pattern, and every non-obvious gotcha behind the code in this repo — lives in **`../mfe-pot-platform/CLAUDE.md`**. Read it before making any architectural change here; this file only covers what's specific to this repo. See `../CLAUDE.md` (the `mfe-pot` meta repo) for the full 7-repo map.
 
 ## What's in this repo
 
