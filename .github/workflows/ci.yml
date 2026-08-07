@@ -62,9 +62,9 @@ jobs:
       - name: Checkout this repo
         uses: actions/checkout@v4
         with:
-          path: mfe-pot-employment-insurance
+          path: mfe-pot-employment-insurance-mfe
 
-      # charts/employment-insurance/Chart.yaml's library-chart
+      # charts/employment-insurance-mfe/Chart.yaml's library-chart
       # dependencies resolve via a sibling-checkout-relative file:// path
       # (see CLAUDE.md) -- checked out alongside this repo so the same
       # relative layout local dev uses (both under one parent directory)
@@ -78,12 +78,12 @@ jobs:
 
       - uses: docker/setup-buildx-action@v3
 
-      - name: Build employment-insurance image
+      - name: Build employment-insurance-mfe image
         uses: docker/build-push-action@v6
         with:
-          context: mfe-pot-employment-insurance
-          file: mfe-pot-employment-insurance/apps/employment-insurance/Dockerfile
-          tags: mfe-pot-employment-insurance:kind
+          context: mfe-pot-employment-insurance-mfe
+          file: mfe-pot-employment-insurance-mfe/apps/employment-insurance-mfe/Dockerfile
+          tags: mfe-pot-employment-insurance-mfe:kind
           load: true
           secrets: |
             npm_token=${{ secrets.GITHUB_TOKEN }}
@@ -91,8 +91,8 @@ jobs:
       - name: Build employment-insurance-bff image
         uses: docker/build-push-action@v6
         with:
-          context: mfe-pot-employment-insurance
-          file: mfe-pot-employment-insurance/apps/employment-insurance-bff/Dockerfile
+          context: mfe-pot-employment-insurance-mfe
+          file: mfe-pot-employment-insurance-mfe/apps/employment-insurance-bff/Dockerfile
           tags: mfe-pot-employment-insurance-bff:kind
           load: true
           secrets: |
@@ -121,19 +121,19 @@ jobs:
 
       - name: Load images into kind
         run: |
-          kind load docker-image mfe-pot-employment-insurance:kind
+          kind load docker-image mfe-pot-employment-insurance-mfe:kind
           kind load docker-image mfe-pot-employment-insurance-bff:kind
 
       - uses: azure/setup-helm@v4
 
       - name: helm dependency update
-        run: helm dependency update mfe-pot-employment-insurance/charts/employment-insurance
+        run: helm dependency update mfe-pot-employment-insurance-mfe/charts/employment-insurance-mfe
 
-      - name: helm install employment-insurance
+      - name: helm install employment-insurance-mfe
         run: |
-          helm install employment-insurance mfe-pot-employment-insurance/charts/employment-insurance \
-            -f mfe-pot-employment-insurance/charts/employment-insurance/values.yaml \
-            -f mfe-pot-employment-insurance/charts/employment-insurance/values-kind.yaml \
+          helm install employment-insurance-mfe mfe-pot-employment-insurance-mfe/charts/employment-insurance-mfe \
+            -f mfe-pot-employment-insurance-mfe/charts/employment-insurance-mfe/values.yaml \
+            -f mfe-pot-employment-insurance-mfe/charts/employment-insurance-mfe/values-kind.yaml \
             --wait --timeout 120s
 
       # Same checks proven manually (see CLAUDE.md/the platform repo's

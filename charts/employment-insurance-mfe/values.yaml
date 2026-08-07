@@ -1,8 +1,8 @@
 frontend:
-  name: employment-insurance
+  name: employment-insurance-mfe
   replicaCount: 1
   image:
-    repository: mfe-pot-employment-insurance
+    repository: mfe-pot-employment-insurance-mfe
     tag: latest
     pullPolicy: IfNotPresent
   containerPort: 80

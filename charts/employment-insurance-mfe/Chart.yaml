@@ -1,9 +1,9 @@
 apiVersion: v2
-name: employment-insurance
+name: employment-insurance-mfe
 description: >-
-  Deploys the employment-insurance frontend + employment-insurance-bff
+  Deploys the employment-insurance-mfe frontend + employment-insurance-bff
   pair as one Helm release, independent of every other mfe-pot app --
-  `helm upgrade --install employment-insurance ./charts/employment-insurance`
+  `helm upgrade --install employment-insurance-mfe ./charts/employment-insurance-mfe`
   touches only these two. Extracted into this repo per Phase 1 of
   docs/plans/20260801-1935-mfe-pot-polyrepo-split-and-k8s-hosting.md
   (platform repo), following the job-bank chart as its template; its

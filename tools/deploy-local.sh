@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Builds employment-insurance's + employment-insurance-bff's images, spins
+# Builds employment-insurance-mfe's + employment-insurance-bff's images, spins
 # up (or reuses) a local kind cluster with ingress-nginx, and
 # helm-upgrades this app's chart onto it -- the local equivalent of the
 # kind-validation stage in .github/workflows/ci.yml.
@@ -42,11 +42,11 @@ fi
 
 export DOCKER_BUILDKIT=1
 
-echo "==> Building employment-insurance image..."
+echo "==> Building employment-insurance-mfe image..."
 docker build \
   --secret id=npm_token,src="$token_file" \
-  -t mfe-pot-employment-insurance:kind \
-  -f apps/employment-insurance/Dockerfile .
+  -t mfe-pot-employment-insurance-mfe:kind \
+  -f apps/employment-insurance-mfe/Dockerfile .
 
 echo "==> Building employment-insurance-bff image..."
 docker build \
@@ -55,16 +55,16 @@ docker build \
   -f apps/employment-insurance-bff/Dockerfile .
 
 echo "==> Loading images into kind..."
-kind load docker-image mfe-pot-employment-insurance:kind --name "$CLUSTER_NAME"
+kind load docker-image mfe-pot-employment-insurance-mfe:kind --name "$CLUSTER_NAME"
 kind load docker-image mfe-pot-employment-insurance-bff:kind --name "$CLUSTER_NAME"
 
 echo "==> Updating Helm chart dependencies..."
-helm dependency update charts/employment-insurance
+helm dependency update charts/employment-insurance-mfe
 
-echo "==> Deploying employment-insurance..."
-helm upgrade --install employment-insurance charts/employment-insurance \
-  -f charts/employment-insurance/values.yaml \
-  -f charts/employment-insurance/values-kind.yaml \
+echo "==> Deploying employment-insurance-mfe..."
+helm upgrade --install employment-insurance-mfe charts/employment-insurance-mfe \
+  -f charts/employment-insurance-mfe/values.yaml \
+  -f charts/employment-insurance-mfe/values-kind.yaml \
   --wait --timeout 120s
 
 # values-kind.yaml pins static image tags with pullPolicy: Never, so
@@ -74,8 +74,8 @@ helm upgrade --install employment-insurance charts/employment-insurance \
 # content indefinitely (confirmed the hard way: a redeploy silently kept
 # serving a pre-fix build). Force both deployments explicitly every run.
 echo "==> Restarting deployments to pick up the freshly built images..."
-kubectl rollout restart deployment/employment-insurance deployment/employment-insurance-bff
-kubectl rollout status deployment/employment-insurance --timeout=60s
+kubectl rollout restart deployment/employment-insurance-mfe deployment/employment-insurance-bff
+kubectl rollout status deployment/employment-insurance-mfe --timeout=60s
 kubectl rollout status deployment/employment-insurance-bff --timeout=60s
 
 echo "==> Waiting for ingress..."
@@ -86,9 +86,9 @@ for i in $(seq 1 30); do
   sleep 2
 done
 if [ "$status" != "200" ]; then
-  echo "warning: employment-insurance isn't answering with 200 yet (last status: $status). Check with:" >&2
+  echo "warning: employment-insurance-mfe isn't answering with 200 yet (last status: $status). Check with:" >&2
   echo "  kubectl get pods,ingress" >&2
   exit 1
 fi
 
-echo "==> employment-insurance is up: curl -H \"Host: $HOSTNAME\" http://localhost/"
+echo "==> employment-insurance-mfe is up: curl -H \"Host: $HOSTNAME\" http://localhost/"

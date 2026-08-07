@@ -16,7 +16,7 @@
 import './styles.css';
 import { initFederation } from '@softarc/native-federation-orchestrator';
 
-initFederation({ 'employment-insurance': './remoteEntry.json' })
+initFederation({ 'employment-insurance-mfe': './remoteEntry.json' })
   .catch((err) => console.error(err))
   .then(() => import('./bootstrap'))
   .catch((err) => console.error(err));

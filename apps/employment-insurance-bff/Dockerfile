@@ -20,7 +20,7 @@
 # package.json), which includes @tn4consulting/shared-* even though this
 # BFF's own source doesn't import them -- same GitHub Packages auth need,
 # same file-mounted-secret and pnpm-store-cache-mount reasoning, as
-# apps/employment-insurance/Dockerfile's top comment.
+# apps/employment-insurance-mfe/Dockerfile's top comment.
 FROM node:22-alpine AS build
 WORKDIR /workspace
 # CI=true kept for consistency, and the pnpm.onlyBuiltDependencies fix

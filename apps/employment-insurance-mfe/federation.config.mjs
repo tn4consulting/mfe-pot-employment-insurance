@@ -48,11 +48,11 @@ const sharedUiScdsCoreLoader = share({
 // host to populate -- both exposed components do all of their own setup
 // on mount instead (see App.tsx and ReportingStatus.tsx).
 export default withNativeFederation({
-  name: 'employment-insurance',
+  name: 'employment-insurance-mfe',
 
   exposes: {
-    './Component': './apps/employment-insurance/src/app/App.tsx',
-    './EiReportingStatusWidget': './apps/employment-insurance/src/app/ReportingStatus.tsx',
+    './Component': './apps/employment-insurance-mfe/src/app/App.tsx',
+    './EiReportingStatusWidget': './apps/employment-insurance-mfe/src/app/ReportingStatus.tsx',
   },
 
   shared: {

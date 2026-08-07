@@ -15,13 +15,13 @@ import { join } from 'node:path';
 const require = createRequire(import.meta.url);
 
 const dev = process.argv.includes('--dev');
-const outputPath = 'dist/apps/employment-insurance/browser';
+const outputPath = 'dist/apps/employment-insurance-mfe/browser';
 
 await rm(outputPath, { recursive: true, force: true });
 await mkdir(outputPath, { recursive: true });
 
-await cp('apps/employment-insurance/public', outputPath, { recursive: true });
-await cp('apps/employment-insurance/src/index.html', join(outputPath, 'index.html'));
+await cp('apps/employment-insurance-mfe/public', outputPath, { recursive: true });
+await cp('apps/employment-insurance-mfe/src/index.html', join(outputPath, 'index.html'));
 await cp(require.resolve('es-module-shims'), join(outputPath, 'es-module-shims.js'));
 
 // Deliberately NOT using @softarc/native-federation-esbuild's built-in
@@ -44,10 +44,10 @@ await cp(require.resolve('es-module-shims'), join(outputPath, 'es-module-shims.j
 // (react.js, react-dom.js) is a cosmetic side effect of reusing the `dev`
 // flag for this, not a sign anything else is running in dev mode -- this
 // app's own standalone bundle below is still fully minified.
-const result = await runEsBuildBuilder('apps/employment-insurance/federation.config.mjs', {
+const result = await runEsBuildBuilder('apps/employment-insurance-mfe/federation.config.mjs', {
   workspaceRoot: process.cwd(),
   outputPath,
-  tsConfig: 'apps/employment-insurance/tsconfig.federation.json',
+  tsConfig: 'apps/employment-insurance-mfe/tsconfig.federation.json',
   packageJson: 'package.json',
   dev: true,
   watch: false,
@@ -59,7 +59,7 @@ const result = await runEsBuildBuilder('apps/employment-insurance/federation.con
 await result.close();
 
 await esbuild.build({
-  entryPoints: ['apps/employment-insurance/src/main.tsx'],
+  entryPoints: ['apps/employment-insurance-mfe/src/main.tsx'],
   outfile: join(outputPath, 'main.js'),
   bundle: true,
   format: 'esm',
@@ -73,4 +73,4 @@ await esbuild.build({
   },
 });
 
-console.log(`employment-insurance built to ${outputPath} (${dev ? 'development' : 'production'})`);
+console.log(`employment-insurance-mfe built to ${outputPath} (${dev ? 'development' : 'production'})`);

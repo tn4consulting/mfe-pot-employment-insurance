@@ -10,19 +10,19 @@ import { createRequire } from 'node:module';
 import { extname, join } from 'node:path';
 
 const require = createRequire(import.meta.url);
-const outputPath = 'dist/apps/employment-insurance/browser';
-const port = Number(process.env.EMPLOYMENT_INSURANCE_DEV_PORT ?? 4204);
+const outputPath = 'dist/apps/employment-insurance-mfe/browser';
+const port = Number(process.env.EMPLOYMENT_INSURANCE_MFE_DEV_PORT ?? 4204);
 
 await rm(outputPath, { recursive: true, force: true });
 await mkdir(outputPath, { recursive: true });
-await cp('apps/employment-insurance/public', outputPath, { recursive: true });
-await cp('apps/employment-insurance/src/index.html', join(outputPath, 'index.html'));
+await cp('apps/employment-insurance-mfe/public', outputPath, { recursive: true });
+await cp('apps/employment-insurance-mfe/src/index.html', join(outputPath, 'index.html'));
 await cp(require.resolve('es-module-shims'), join(outputPath, 'es-module-shims.js'));
 
-await runEsBuildBuilder('apps/employment-insurance/federation.config.mjs', {
+await runEsBuildBuilder('apps/employment-insurance-mfe/federation.config.mjs', {
   workspaceRoot: process.cwd(),
   outputPath,
-  tsConfig: 'apps/employment-insurance/tsconfig.federation.json',
+  tsConfig: 'apps/employment-insurance-mfe/tsconfig.federation.json',
   packageJson: 'package.json',
   dev: true,
   watch: true,
@@ -33,7 +33,7 @@ await runEsBuildBuilder('apps/employment-insurance/federation.config.mjs', {
 });
 
 const mainCtx = await esbuild.context({
-  entryPoints: ['apps/employment-insurance/src/main.tsx'],
+  entryPoints: ['apps/employment-insurance-mfe/src/main.tsx'],
   outfile: join(outputPath, 'main.js'),
   bundle: true,
   format: 'esm',
@@ -73,5 +73,5 @@ createServer(async (req, res) => {
     res.end('Not found');
   }
 }).listen(port, () => {
-  console.log(`employment-insurance dev server listening on http://localhost:${port}`);
+  console.log(`employment-insurance-mfe dev server listening on http://localhost:${port}`);
 });
