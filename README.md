@@ -80,10 +80,10 @@ dependencies resolve via `file://../../../mfe-pot-platform/charts/...`
 relative paths). Add to `/etc/hosts`:
 
 ```
-127.0.0.1 employment-insurance.mfe-pot.local
+127.0.0.1 employment-insurance-mfe.mfe-pot.local
 ```
 
-Then `curl -H "Host: employment-insurance.mfe-pot.local" http://localhost/`
+Then `curl -H "Host: employment-insurance-mfe.mfe-pot.local" http://localhost/`
 or browse there directly.
 
 ## Where to go next

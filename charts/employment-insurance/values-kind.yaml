@@ -16,5 +16,5 @@ backend:
     pullPolicy: Never
 
 ingress:
-  host: employment-insurance.mfe-pot.local
+  host: employment-insurance-mfe.mfe-pot.local
   className: nginx
