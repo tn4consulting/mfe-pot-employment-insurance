@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getStoredSession } from '@tn4consulting/shared-auth/core';
 import { useLocale } from '@tn4consulting/shared-i18n';
 import type { ContentClient } from '@tn4consulting/shared-content-client';
@@ -23,6 +23,24 @@ const STATUS_CONTENT_KEY: Record<EiReportingStatusLabel, (typeof REPORTING_STATU
   overdue: 'employment-insurance.reporting-status.overdue',
 };
 
+export interface ReportingStatusProps {
+  /**
+   * Fires once, after this component's own fetch resolves, with whatever
+   * it fetched (`null` means "no active claim", a legitimate resolved
+   * state, not an error). Lets a consumer observe the real reporting
+   * status without re-implementing the fetch. Optional and additive --
+   * every existing call site (this app's own `App.tsx`, and any federated
+   * consumer that predates this prop) still works with zero props. Added
+   * for `mfe-pot-employment-life-events-mfe`'s guided-journey checklist,
+   * which needs to know whether the citizen has applied for EI and
+   * whether their reporting is current, to mark those checklist items
+   * complete -- deliberately generic (just "here's what loaded"), not
+   * anything loss-of-job-specific; that framing lives entirely in the
+   * consumer.
+   */
+  onStatusLoaded?: (status: EiReportingStatus | null) => void;
+}
+
 /**
  * Rendered directly by this app's own App.tsx, and also still exposed as
  * `./EiReportingStatusWidget` for a federated consumer to embed (dashboard
@@ -36,7 +54,7 @@ const STATUS_CONTENT_KEY: Record<EiReportingStatusLabel, (typeof REPORTING_STATU
  * Intl.DateTimeFormat, not raw ISO) plus a raw day count, filled into the
  * CMS template via `fillTemplate`.
  */
-export function ReportingStatus() {
+export function ReportingStatus({ onStatusLoaded }: ReportingStatusProps = {}) {
   const locale = useLocale();
   const [apiClient, setApiClient] = useState<EmploymentInsuranceApiClient | null>(null);
   const [contentClient, setContentClient] = useState<ContentClient | null>(null);
@@ -44,6 +62,10 @@ export function ReportingStatus() {
   const [loaded, setLoaded] = useState(false);
   const [loadError, setLoadError] = useState(false);
   const content = usePageContents(contentClient, REPORTING_STATUS_CONTENT_KEYS, locale);
+  // A ref, not a fetch-effect dependency -- see JobApplicationsList's
+  // identical pattern/rationale in mfe-pot-job-bank-mfe for why.
+  const onStatusLoadedRef = useRef(onStatusLoaded);
+  onStatusLoadedRef.current = onStatusLoaded;
 
   function label(key: (typeof REPORTING_STATUS_CONTENT_KEYS)[number]): string {
     return content[key]?.title ?? key;
@@ -77,6 +99,7 @@ export function ReportingStatus() {
         if (!cancelled) {
           setReportingStatus(status);
           setLoaded(true);
+          onStatusLoadedRef.current?.(status);
         }
       })
       .catch((err) => {

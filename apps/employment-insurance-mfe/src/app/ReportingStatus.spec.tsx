@@ -68,6 +68,22 @@ describe('ReportingStatus', () => {
     });
   });
 
+  it('calls onStatusLoaded once the fetch resolves', async () => {
+    storeSession(createMockSession());
+    const onStatusLoaded = jest.fn();
+
+    render(<ReportingStatus onStatusLoaded={onStatusLoaded} />);
+
+    await waitFor(() =>
+      expect(onStatusLoaded).toHaveBeenCalledWith({
+        claimId: 'claim-1',
+        nextReportDue: '2026-07-22T00:00:00.000Z',
+        daysUntilDue: 7,
+        status: 'not_yet_due',
+      }),
+    );
+  });
+
   it('shows a no-claim message when there is a session but no active claim', async () => {
     storeSession(createMockSession());
     (global.fetch as jest.Mock).mockImplementation((url: string) => {
