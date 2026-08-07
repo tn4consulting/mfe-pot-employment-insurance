@@ -24,14 +24,17 @@ const STATUS_CONTENT_KEY: Record<EiReportingStatusLabel, (typeof REPORTING_STATU
 };
 
 /**
- * Exposed as `./EiReportingStatusWidget` for dashboard to embed -- never
- * rendered by this app's own App.tsx. Fully self-configuring (fetches its
- * own runtime config, builds its own API client and content client) since
- * there's no host to supply one -- same "every remote does its own setup"
- * principle as every other converted widget in this family.
- * `reportingStatus.nextReportDue` takes a pre-formatted, locale-aware date
- * string (computed here via Intl.DateTimeFormat, not raw ISO) plus a raw
- * day count, filled into the CMS template via `fillTemplate`.
+ * Rendered directly by this app's own App.tsx, and also still exposed as
+ * `./EiReportingStatusWidget` for a federated consumer to embed (dashboard
+ * used to; see App.tsx's own comment on why it no longer does). Fully
+ * self-configuring (fetches its own runtime config, builds its own API
+ * client and content client) since there's no host guaranteed to supply
+ * one -- same "every remote does its own setup" principle as every other
+ * converted widget in this family, and why it needed no changes to also
+ * render inline here. `reportingStatus.nextReportDue` takes a
+ * pre-formatted, locale-aware date string (computed here via
+ * Intl.DateTimeFormat, not raw ISO) plus a raw day count, filled into the
+ * CMS template via `fillTemplate`.
  */
 export function ReportingStatus() {
   const locale = useLocale();

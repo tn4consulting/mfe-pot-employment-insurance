@@ -40,6 +40,15 @@ jest.mock('./content-client', () => ({
     'employment-insurance.reporting.submitButton',
     'employment-insurance.reporting.confirmation',
   ],
+  REPORTING_STATUS_CONTENT_KEYS: [
+    'employment-insurance.reporting-status.heading',
+    'employment-insurance.reporting-status.unavailable',
+    'employment-insurance.reporting-status.noClaim',
+    'employment-insurance.reporting-status.notYetDue',
+    'employment-insurance.reporting-status.dueSoon',
+    'employment-insurance.reporting-status.overdue',
+    'employment-insurance.reporting-status.nextReportDue',
+  ],
   createContentClient: () => ({ getPageContent: getPageContentMock, getPageContents: getPageContentsMock }),
 }));
 
@@ -73,6 +82,12 @@ describe('App', () => {
         title: 'Report {id} submitted for {periodStart} to {periodEnd}.',
         body: '',
       },
+      'employment-insurance.reporting-status.heading': { title: 'EI Reporting Status', body: '' },
+      'employment-insurance.reporting-status.unavailable': {
+        title: 'EI reporting status is temporarily unavailable.',
+        body: '',
+      },
+      'employment-insurance.reporting-status.noClaim': { title: 'You have no active EI claim.', body: '' },
     });
     global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 404 }) as unknown as typeof fetch;
   });

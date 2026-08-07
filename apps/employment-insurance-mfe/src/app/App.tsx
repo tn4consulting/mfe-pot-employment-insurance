@@ -14,6 +14,7 @@ import { assetBaseUrl } from './asset-base-url';
 import { Applications } from './Applications';
 import { Claims } from './Claims';
 import { Reporting } from './Reporting';
+import { ReportingStatus } from './ReportingStatus';
 import './register-scds';
 
 interface RemoteConfig {
@@ -27,9 +28,14 @@ interface RemoteConfig {
  * Auth/claim check lives here, not in the feature components -- defense
  * in depth, this app validates its own claim independently.
  *
- * Note: `feature-reporting-status` (ReportingStatus.tsx) is deliberately
- * NOT rendered here -- it's exposed only as `./EiReportingStatusWidget`
- * for dashboard to embed, same as the Angular version this replaces.
+ * `ReportingStatus.tsx` renders here too, not just as the federated
+ * `./EiReportingStatusWidget` dashboard used to embed -- dashboard's own
+ * overview dropped that embed (docs/msca-screenshots/dashboard.png has no
+ * EI-reporting-status tile on the dashboard page), so this app's own page
+ * is now the one place a citizen actually sees it. The federation expose
+ * itself is untouched (still real, still buildable) in case a future
+ * consumer wants it; ReportingStatus is fully self-configuring either way
+ * (see its own comment), so rendering it here needed no props threaded in.
  */
 export function App() {
   const [hasAccess, setHasAccess] = useState(() => hasClaim(getStoredSession(), CLAIM_EI));
@@ -105,6 +111,7 @@ export function App() {
       <Applications apiClient={config.apiClient} contentClient={config.contentClient} locale={locale} />
       <Claims apiClient={config.apiClient} contentClient={config.contentClient} locale={locale} />
       <Reporting apiClient={config.apiClient} contentClient={config.contentClient} locale={locale} />
+      <ReportingStatus />
     </>
   );
 }
