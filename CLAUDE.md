@@ -13,7 +13,7 @@ The **EI application, claim status, and EI reporting** frontend for the mfe-pot 
 - `libs/data-access` — `EmploymentInsuranceApiClient`. The one library that stayed separate when this repo's feature libs folded into `apps/employment-insurance/src/app/`.
 - `charts/employment-insurance` — deploys the frontend+BFF pair as one Helm release, following job-bank's chart shape exactly (this app had no Dockerfile or chart yet in the platform repo before extraction — both were authored fresh here).
 
-Depends on published packages from GitHub Packages: `@tn4consulting/shared-auth`, `shared-auth-server`, `shared-content-client`, `shared-federation-config`, `shared-federation-runtime`, `shared-i18n`, `shared-locale-sync`, `shared-runtime-config`, `shared-session-cache`, `shared-ui-scds-core` (pinned in `package.json`; keep in sync with `platform-versions.json` in `mfe-pot-platform`). No wrapper package for GCDS/SCDS — `@gcds-core/components` and `shared-ui-scds-core`'s custom elements (`scds-card`) are consumed directly via JSX, same as every other app.
+Depends on published packages from GitHub Packages: `@tn4consulting/shared-auth`, `shared-auth-server`, `shared-content-client`, `shared-federation-config`, `shared-federation-runtime`, `shared-i18n`, `shared-locale-sync`, `shared-runtime-config`, `shared-session-cache`, `shared-ui-scds-core` (pinned in `package.json`; keep in sync with `platform-versions.json` in `mfe-pot-platform`). GCDS has been removed from the family entirely (see the platform repo's CLAUDE.md) — no wrapper package for SCDS either, `shared-ui-scds-core`'s custom elements (`scds-card`) are consumed directly via JSX, same as every other app.
 
 ## Repo-specific things worth knowing
 
@@ -27,4 +27,4 @@ Depends on published packages from GitHub Packages: `@tn4consulting/shared-auth`
 
 ## Renovate
 
-`renovate.json` extends `github>tn4consulting/mfe-pot-platform` — the shared preset (groups `react`, `react-dom`, and `@gcds-core/components` into one coordinated pinned bump, the federation-shared singletons). Don't hand-roll React/GCDS version bumps here independently of the other 5 repos; `platform-versions.json` in `mfe-pot-platform` is the source of truth for what version they should all be on.
+`renovate.json` extends `github>tn4consulting/mfe-pot-platform` — the shared preset (groups `react`, `react-dom`, and `@tn4consulting/shared-ui-scds-core` into one coordinated pinned bump, the federation-shared singletons). Don't hand-roll React/SCDS version bumps here independently of the other 5 repos; `platform-versions.json` in `mfe-pot-platform` is the source of truth for what version they should all be on.
