@@ -23,18 +23,6 @@ const STATUS_CONTENT_KEY: Record<EiReportingStatusLabel, (typeof REPORTING_STATU
   overdue: 'employment-insurance.reporting-status.overdue',
 };
 
-// Rendered until the CMS batch fetch resolves -- never blank, same bar
-// StaticContentClient already meets as the no-CMS fallback.
-const FALLBACK: Record<(typeof REPORTING_STATUS_CONTENT_KEYS)[number], string> = {
-  'employment-insurance.reporting-status.heading': 'EI Reporting Status',
-  'employment-insurance.reporting-status.unavailable': 'EI reporting status is temporarily unavailable.',
-  'employment-insurance.reporting-status.noClaim': 'No active EI claim on file.',
-  'employment-insurance.reporting-status.notYetDue': 'Not yet due',
-  'employment-insurance.reporting-status.dueSoon': 'Due soon',
-  'employment-insurance.reporting-status.overdue': 'Overdue',
-  'employment-insurance.reporting-status.nextReportDue': 'Next report due {date} ({days} days)',
-};
-
 /**
  * Exposed as `./EiReportingStatusWidget` for dashboard to embed -- never
  * rendered by this app's own App.tsx. Fully self-configuring (fetches its
@@ -55,7 +43,7 @@ export function ReportingStatus() {
   const content = usePageContents(contentClient, REPORTING_STATUS_CONTENT_KEYS, locale);
 
   function label(key: (typeof REPORTING_STATUS_CONTENT_KEYS)[number]): string {
-    return content[key]?.title ?? FALLBACK[key];
+    return content[key]?.title ?? key;
   }
 
   useEffect(() => {
@@ -63,7 +51,7 @@ export function ReportingStatus() {
     loadRuntimeConfig(assetBaseUrl).then((runtimeConfig) => {
       if (!cancelled) {
         setApiClient(new HttpEmploymentInsuranceApiClient(runtimeConfig.employmentInsuranceBffBaseUrl));
-        setContentClient(createContentClient(runtimeConfig.strapiBaseUrl));
+        setContentClient(createContentClient(runtimeConfig.strapiBaseUrl, assetBaseUrl));
       }
     });
     return () => {

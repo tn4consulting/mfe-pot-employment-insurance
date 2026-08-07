@@ -1,0 +1,57 @@
+{
+  "employment-insurance.intro": {
+    "title": "Assurance-emploi",
+    "body": "Faites une demande de prestations d'assurance-emploi, consultez l'état de votre demande et soumettez vos déclarations."
+  },
+  "employment-insurance.claims.heading": { "title": "État de la demande", "body": "" },
+  "employment-insurance.claims.error": { "title": "L'état de la demande est temporairement indisponible.", "body": "" },
+  "employment-insurance.claims.cardTitle": { "title": "Demande {id}", "body": "" },
+  "employment-insurance.claims.status": { "title": "État : {status}.", "body": "" },
+  "employment-insurance.claims.empty": { "title": "Aucune demande au dossier pour le moment.", "body": "" },
+  "employment-insurance.applications.heading": { "title": "Assurance-emploi — Faire une demande", "body": "" },
+  "employment-insurance.applications.intro": {
+    "title": "Faites une demande de prestations d'assurance-emploi.",
+    "body": ""
+  },
+  "employment-insurance.applications.button": { "title": "Faire une demande d'AE", "body": "" },
+  "employment-insurance.applications.confirmationDescription": {
+    "title": "État : {status}, prestation hebdomadaire : {amount} $.",
+    "body": ""
+  },
+  "employment-insurance.applications.error": {
+    "title": "Les demandes d'AE sont temporairement indisponibles.",
+    "body": ""
+  },
+  "employment-insurance.reporting.heading": { "title": "Soumettre votre déclaration d'AE", "body": "" },
+  "employment-insurance.reporting.error": {
+    "title": "La déclaration d'AE est temporairement indisponible.",
+    "body": ""
+  },
+  "employment-insurance.reporting.noClaim": {
+    "title": "Vous devez avoir une demande d'AE active avant de pouvoir soumettre une déclaration.",
+    "body": ""
+  },
+  "employment-insurance.reporting.hoursLabel": { "title": "Heures travaillées durant cette période", "body": "" },
+  "employment-insurance.reporting.earningsLabel": { "title": "Revenus durant cette période (en dollars)", "body": "" },
+  "employment-insurance.reporting.submitButton": { "title": "Soumettre la déclaration", "body": "" },
+  "employment-insurance.reporting.confirmation": {
+    "title": "Déclaration {id} soumise pour la période du {periodStart} au {periodEnd}.",
+    "body": ""
+  },
+  "employment-insurance.reporting-status.heading": { "title": "État de la déclaration d'assurance-emploi", "body": "" },
+  "employment-insurance.reporting-status.unavailable": {
+    "title": "L'état de la déclaration d'assurance-emploi est temporairement indisponible.",
+    "body": ""
+  },
+  "employment-insurance.reporting-status.noClaim": {
+    "title": "Aucune demande d'assurance-emploi active au dossier.",
+    "body": ""
+  },
+  "employment-insurance.reporting-status.notYetDue": { "title": "Pas encore requise", "body": "" },
+  "employment-insurance.reporting-status.dueSoon": { "title": "Bientôt requise", "body": "" },
+  "employment-insurance.reporting-status.overdue": { "title": "En retard", "body": "" },
+  "employment-insurance.reporting-status.nextReportDue": {
+    "title": "Prochaine déclaration due le {date} ({days} jours)",
+    "body": ""
+  }
+}

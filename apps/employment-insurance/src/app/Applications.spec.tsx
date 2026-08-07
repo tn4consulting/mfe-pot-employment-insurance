@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { clearSession, createMockSession, storeSession } from '@tn4consulting/shared-auth/core';
 import type { ContentClient } from '@tn4consulting/shared-content-client';
@@ -8,7 +8,17 @@ import { Applications } from './Applications';
 
 const contentClient: ContentClient = {
   getPageContent: jest.fn().mockResolvedValue(null),
-  getPageContents: jest.fn().mockResolvedValue({}),
+  getPageContents: jest.fn().mockResolvedValue({
+    'employment-insurance.applications.heading': { title: 'Employment Insurance — Apply', body: '' },
+    'employment-insurance.applications.intro': { title: 'Apply for Employment Insurance benefits.', body: '' },
+    'employment-insurance.applications.button': { title: 'Apply for EI', body: '' },
+    'employment-insurance.applications.confirmationDescription': {
+      title: 'Status: {status}, weekly benefit: ${amount}.',
+      body: '',
+    },
+    'employment-insurance.applications.error': { title: 'EI applications are temporarily unavailable.', body: '' },
+    'employment-insurance.claims.cardTitle': { title: 'Claim {id}', body: '' },
+  }),
 };
 
 function fakeApiClient(overrides: Partial<EmploymentInsuranceApiClient> = {}): EmploymentInsuranceApiClient {
@@ -33,12 +43,14 @@ describe('Applications', () => {
     });
 
     render(<Applications apiClient={apiClient} contentClient={contentClient} locale="en" />);
-    await userEvent.click(screen.getByRole('button', { name: 'Apply for EI' }));
+    await userEvent.click(await screen.findByRole('button', { name: 'Apply for EI' }));
 
-    const card = await screen.findByRole('status');
-    expect(card.getAttribute('card-title')).toBe('Claim claim-1');
-    expect(card.getAttribute('description')).toBe('Status: approved, weekly benefit: $450.00.');
-    expect(card.getAttribute('tone')).toBe('success');
+    await waitFor(() => {
+      const card = screen.getByRole('status');
+      expect(card.getAttribute('card-title')).toBe('Claim claim-1');
+      expect(card.getAttribute('description')).toBe('Status: approved, weekly benefit: $450.00.');
+      expect(card.getAttribute('tone')).toBe('success');
+    });
   });
 
   it('shows an alert when the application fails', async () => {
@@ -47,8 +59,8 @@ describe('Applications', () => {
     const apiClient = fakeApiClient({ applyForEi: jest.fn().mockRejectedValue(new Error('boom')) });
 
     render(<Applications apiClient={apiClient} contentClient={contentClient} locale="en" />);
-    await userEvent.click(screen.getByRole('button', { name: 'Apply for EI' }));
+    await userEvent.click(await screen.findByRole('button', { name: 'Apply for EI' }));
 
-    expect(await screen.findByRole('alert')).toHaveTextContent('temporarily unavailable');
+    await waitFor(() => expect(screen.getByRole('alert')).toHaveTextContent('temporarily unavailable'));
   });
 });

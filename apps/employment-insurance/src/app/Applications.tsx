@@ -10,17 +10,6 @@ import type { EiClaim, EmploymentInsuranceApiClient } from 'employment-insurance
 import { APPLICATIONS_CONTENT_KEYS } from './content-client';
 import { usePageContents } from './use-page-contents';
 
-// Rendered until the CMS batch fetch resolves -- never blank, same bar
-// StaticContentClient already meets as the no-CMS fallback.
-const FALLBACK: Record<(typeof APPLICATIONS_CONTENT_KEYS)[number], string> = {
-  'employment-insurance.applications.heading': 'Employment Insurance — Apply',
-  'employment-insurance.applications.intro': 'Apply for Employment Insurance benefits.',
-  'employment-insurance.applications.button': 'Apply for EI',
-  'employment-insurance.applications.confirmationDescription': 'Status: {status}, weekly benefit: ${amount}.',
-  'employment-insurance.applications.error': 'EI applications are temporarily unavailable.',
-  'employment-insurance.claims.cardTitle': 'Claim {id}',
-};
-
 export interface ApplicationsProps {
   apiClient: EmploymentInsuranceApiClient;
   contentClient: ContentClient;
@@ -38,7 +27,7 @@ export function Applications({ apiClient, contentClient, locale }: ApplicationsP
   const content = usePageContents(contentClient, APPLICATIONS_CONTENT_KEYS, locale);
 
   function label(key: (typeof APPLICATIONS_CONTENT_KEYS)[number]): string {
-    return content[key]?.title ?? FALLBACK[key];
+    return content[key]?.title ?? key;
   }
 
   function confirmationDescription(claim: EiClaim): string {

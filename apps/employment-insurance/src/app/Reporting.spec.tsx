@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { clearSession, createMockSession, storeSession } from '@tn4consulting/shared-auth/core';
 import type { ContentClient } from '@tn4consulting/shared-content-client';
@@ -8,7 +8,21 @@ import { Reporting } from './Reporting';
 
 const contentClient: ContentClient = {
   getPageContent: jest.fn().mockResolvedValue(null),
-  getPageContents: jest.fn().mockResolvedValue({}),
+  getPageContents: jest.fn().mockResolvedValue({
+    'employment-insurance.reporting.heading': { title: 'Submit your EI report', body: '' },
+    'employment-insurance.reporting.error': { title: 'EI reporting is temporarily unavailable.', body: '' },
+    'employment-insurance.reporting.noClaim': {
+      title: 'You need an active EI claim before you can submit a report.',
+      body: '',
+    },
+    'employment-insurance.reporting.hoursLabel': { title: 'Hours worked this period', body: '' },
+    'employment-insurance.reporting.earningsLabel': { title: 'Earnings this period ($)', body: '' },
+    'employment-insurance.reporting.submitButton': { title: 'Submit report', body: '' },
+    'employment-insurance.reporting.confirmation': {
+      title: 'Report {id} submitted for {periodStart} to {periodEnd}.',
+      body: '',
+    },
+  }),
 };
 
 function fakeApiClient(overrides: Partial<EmploymentInsuranceApiClient> = {}): EmploymentInsuranceApiClient {
@@ -53,9 +67,11 @@ describe('Reporting', () => {
 
     render(<Reporting apiClient={apiClient} contentClient={contentClient} locale="en" />);
     await screen.findByLabelText('Hours worked this period');
-    await userEvent.click(screen.getByRole('button', { name: 'Submit report' }));
+    await userEvent.click(await screen.findByRole('button', { name: 'Submit report' }));
 
-    expect(await screen.findByRole('status')).toHaveTextContent('Report report-1 submitted for 2026-07-01 to 2026-07-14.');
+    await waitFor(() =>
+      expect(screen.getByRole('status')).toHaveTextContent('Report report-1 submitted for 2026-07-01 to 2026-07-14.'),
+    );
     expect(apiClient.submitReport).toHaveBeenCalledWith('claim-1', 'mock-citizen-001', '2026-07-01', '2026-07-14', 0, 0);
   });
 });

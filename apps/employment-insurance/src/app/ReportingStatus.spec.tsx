@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { clearSession, createMockSession, storeSession } from '@tn4consulting/shared-auth/core';
 import { ReportingStatus } from './ReportingStatus';
 
@@ -10,12 +10,24 @@ jest.mock('../runtime-config', () => ({
     .mockResolvedValue({ employmentInsuranceBffBaseUrl: 'http://localhost:3002', strapiBaseUrl: undefined }),
 }));
 
+// No strapiBaseUrl configured above, so content comes from the real
+// StaticContentClient's fetched fallback (content-client.ts).
+const FALLBACK_EN = {
+  'employment-insurance.reporting-status.heading': { title: 'EI Reporting Status', body: '' },
+  'employment-insurance.reporting-status.unavailable': { title: 'EI reporting status is temporarily unavailable.', body: '' },
+  'employment-insurance.reporting-status.noClaim': { title: 'No active EI claim on file.', body: '' },
+  'employment-insurance.reporting-status.notYetDue': { title: 'Not yet due', body: '' },
+  'employment-insurance.reporting-status.dueSoon': { title: 'Due soon', body: '' },
+  'employment-insurance.reporting-status.overdue': { title: 'Overdue', body: '' },
+  'employment-insurance.reporting-status.nextReportDue': { title: 'Next report due {date} ({days} days)', body: '' },
+};
+
 describe('ReportingStatus', () => {
   beforeEach(() => {
-    // No strapiBaseUrl configured above, so content comes from
-    // StaticContentClient's baked English fallback (content-client.ts) --
-    // no fetch mock needed for content, only for the BFF's own API call.
     global.fetch = jest.fn((url: string) => {
+      if (url.toString().includes('content-fallback')) {
+        return Promise.resolve({ json: () => Promise.resolve(FALLBACK_EN) });
+      }
       if (url.toString().includes('/api/reporting-status')) {
         return Promise.resolve({
           ok: true,
@@ -48,15 +60,20 @@ describe('ReportingStatus', () => {
 
     render(<ReportingStatus />);
 
-    const card = await screen.findByText((_, el) => el?.tagName.toLowerCase() === 'scds-card');
-    expect(card.getAttribute('card-title')).toBe('Not yet due');
-    expect(card.getAttribute('description')).toBe('Next report due July 22, 2026 (7 days)');
-    expect(card.getAttribute('tone')).toBeNull();
+    await waitFor(() => {
+      const card = screen.getByText((_, el) => el?.tagName.toLowerCase() === 'scds-card');
+      expect(card.getAttribute('card-title')).toBe('Not yet due');
+      expect(card.getAttribute('description')).toBe('Next report due July 22, 2026 (7 days)');
+      expect(card.getAttribute('tone')).toBeNull();
+    });
   });
 
   it('shows a no-claim message when there is a session but no active claim', async () => {
     storeSession(createMockSession());
     (global.fetch as jest.Mock).mockImplementation((url: string) => {
+      if (url.toString().includes('content-fallback')) {
+        return Promise.resolve({ json: () => Promise.resolve(FALLBACK_EN) });
+      }
       if (url.toString().includes('/api/reporting-status')) {
         // HttpEmploymentInsuranceApiClient.getReportingStatus maps a 404
         // specifically to `null` (a legitimate "no claim yet" state, not

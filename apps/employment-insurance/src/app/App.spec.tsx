@@ -46,7 +46,34 @@ jest.mock('./content-client', () => ({
 describe('App', () => {
   beforeEach(() => {
     getPageContentMock.mockReset().mockResolvedValue(null);
-    getPageContentsMock.mockReset().mockResolvedValue({});
+    getPageContentsMock.mockReset().mockResolvedValue({
+      'employment-insurance.claims.heading': { title: 'Claim status', body: '' },
+      'employment-insurance.claims.error': { title: 'Claim status is temporarily unavailable.', body: '' },
+      'employment-insurance.claims.cardTitle': { title: 'Claim {id}', body: '' },
+      'employment-insurance.claims.status': { title: 'Status: {status}.', body: '' },
+      'employment-insurance.claims.empty': { title: 'No claim on file yet.', body: '' },
+      'employment-insurance.applications.heading': { title: 'Employment Insurance — Apply', body: '' },
+      'employment-insurance.applications.intro': { title: 'Apply for Employment Insurance benefits.', body: '' },
+      'employment-insurance.applications.button': { title: 'Apply for EI', body: '' },
+      'employment-insurance.applications.confirmationDescription': {
+        title: 'Status: {status}, weekly benefit: ${amount}.',
+        body: '',
+      },
+      'employment-insurance.applications.error': { title: 'EI applications are temporarily unavailable.', body: '' },
+      'employment-insurance.reporting.heading': { title: 'Submit your EI report', body: '' },
+      'employment-insurance.reporting.error': { title: 'EI reporting is temporarily unavailable.', body: '' },
+      'employment-insurance.reporting.noClaim': {
+        title: 'You need an active EI claim before you can submit a report.',
+        body: '',
+      },
+      'employment-insurance.reporting.hoursLabel': { title: 'Hours worked this period', body: '' },
+      'employment-insurance.reporting.earningsLabel': { title: 'Earnings this period ($)', body: '' },
+      'employment-insurance.reporting.submitButton': { title: 'Submit report', body: '' },
+      'employment-insurance.reporting.confirmation': {
+        title: 'Report {id} submitted for {periodStart} to {periodEnd}.',
+        body: '',
+      },
+    });
     global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 404 }) as unknown as typeof fetch;
   });
 
@@ -60,8 +87,8 @@ describe('App', () => {
     render(<App />);
 
     expect(await screen.findByRole('heading', { level: 1, name: 'Employment Insurance — Apply' })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { level: 2, name: 'Claim status' })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { level: 2, name: 'Submit your EI report' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 2, name: 'Claim status' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 2, name: 'Submit your EI report' })).toBeInTheDocument();
   });
 
   it('renders intro content fetched via ContentClient', async () => {

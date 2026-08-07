@@ -8,16 +8,6 @@ import type { EiClaim, EmploymentInsuranceApiClient } from 'employment-insurance
 import { CLAIMS_CONTENT_KEYS } from './content-client';
 import { usePageContents } from './use-page-contents';
 
-// Rendered until the CMS batch fetch resolves -- never blank, same bar
-// StaticContentClient already meets as the no-CMS fallback.
-const FALLBACK: Record<(typeof CLAIMS_CONTENT_KEYS)[number], string> = {
-  'employment-insurance.claims.heading': 'Claim status',
-  'employment-insurance.claims.error': 'Claim status is temporarily unavailable.',
-  'employment-insurance.claims.cardTitle': 'Claim {id}',
-  'employment-insurance.claims.status': 'Status: {status}.',
-  'employment-insurance.claims.empty': 'No claim on file yet.',
-};
-
 export interface ClaimsProps {
   apiClient: EmploymentInsuranceApiClient;
   contentClient: ContentClient;
@@ -35,7 +25,7 @@ export function Claims({ apiClient, contentClient, locale }: ClaimsProps) {
   const content = usePageContents(contentClient, CLAIMS_CONTENT_KEYS, locale);
 
   function label(key: (typeof CLAIMS_CONTENT_KEYS)[number]): string {
-    return content[key]?.title ?? FALLBACK[key];
+    return content[key]?.title ?? key;
   }
 
   useEffect(() => {

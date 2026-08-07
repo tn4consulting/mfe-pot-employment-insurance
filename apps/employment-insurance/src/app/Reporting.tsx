@@ -8,18 +8,6 @@ import type { EiReport, EmploymentInsuranceApiClient } from 'employment-insuranc
 import { REPORTING_CONTENT_KEYS } from './content-client';
 import { usePageContents } from './use-page-contents';
 
-// Rendered until the CMS batch fetch resolves -- never blank, same bar
-// StaticContentClient already meets as the no-CMS fallback.
-const FALLBACK: Record<(typeof REPORTING_CONTENT_KEYS)[number], string> = {
-  'employment-insurance.reporting.heading': 'Submit your EI report',
-  'employment-insurance.reporting.error': 'EI reporting is temporarily unavailable.',
-  'employment-insurance.reporting.noClaim': 'You need an active EI claim before you can submit a report.',
-  'employment-insurance.reporting.hoursLabel': 'Hours worked this period',
-  'employment-insurance.reporting.earningsLabel': 'Earnings this period ($)',
-  'employment-insurance.reporting.submitButton': 'Submit report',
-  'employment-insurance.reporting.confirmation': 'Report {id} submitted for {periodStart} to {periodEnd}.',
-};
-
 export interface ReportingProps {
   apiClient: EmploymentInsuranceApiClient;
   contentClient: ContentClient;
@@ -36,7 +24,7 @@ export function Reporting({ apiClient, contentClient, locale }: ReportingProps) 
   const content = usePageContents(contentClient, REPORTING_CONTENT_KEYS, locale);
 
   function label(key: (typeof REPORTING_CONTENT_KEYS)[number]): string {
-    return content[key]?.title ?? FALLBACK[key];
+    return content[key]?.title ?? key;
   }
 
   useEffect(() => {

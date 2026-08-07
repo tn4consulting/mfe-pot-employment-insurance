@@ -1,0 +1,45 @@
+{
+  "employment-insurance.intro": {
+    "title": "Employment Insurance",
+    "body": "Apply for Employment Insurance benefits, check your claim status, and submit your reports."
+  },
+  "employment-insurance.claims.heading": { "title": "Claim status", "body": "" },
+  "employment-insurance.claims.error": { "title": "Claim status is temporarily unavailable.", "body": "" },
+  "employment-insurance.claims.cardTitle": { "title": "Claim {id}", "body": "" },
+  "employment-insurance.claims.status": { "title": "Status: {status}.", "body": "" },
+  "employment-insurance.claims.empty": { "title": "No claim on file yet.", "body": "" },
+  "employment-insurance.applications.heading": { "title": "Employment Insurance — Apply", "body": "" },
+  "employment-insurance.applications.intro": { "title": "Apply for Employment Insurance benefits.", "body": "" },
+  "employment-insurance.applications.button": { "title": "Apply for EI", "body": "" },
+  "employment-insurance.applications.confirmationDescription": {
+    "title": "Status: {status}, weekly benefit: ${amount}.",
+    "body": ""
+  },
+  "employment-insurance.applications.error": { "title": "EI applications are temporarily unavailable.", "body": "" },
+  "employment-insurance.reporting.heading": { "title": "Submit your EI report", "body": "" },
+  "employment-insurance.reporting.error": { "title": "EI reporting is temporarily unavailable.", "body": "" },
+  "employment-insurance.reporting.noClaim": {
+    "title": "You need an active EI claim before you can submit a report.",
+    "body": ""
+  },
+  "employment-insurance.reporting.hoursLabel": { "title": "Hours worked this period", "body": "" },
+  "employment-insurance.reporting.earningsLabel": { "title": "Earnings this period ($)", "body": "" },
+  "employment-insurance.reporting.submitButton": { "title": "Submit report", "body": "" },
+  "employment-insurance.reporting.confirmation": {
+    "title": "Report {id} submitted for {periodStart} to {periodEnd}.",
+    "body": ""
+  },
+  "employment-insurance.reporting-status.heading": { "title": "EI Reporting Status", "body": "" },
+  "employment-insurance.reporting-status.unavailable": {
+    "title": "EI reporting status is temporarily unavailable.",
+    "body": ""
+  },
+  "employment-insurance.reporting-status.noClaim": { "title": "No active EI claim on file.", "body": "" },
+  "employment-insurance.reporting-status.notYetDue": { "title": "Not yet due", "body": "" },
+  "employment-insurance.reporting-status.dueSoon": { "title": "Due soon", "body": "" },
+  "employment-insurance.reporting-status.overdue": { "title": "Overdue", "body": "" },
+  "employment-insurance.reporting-status.nextReportDue": {
+    "title": "Next report due {date} ({days} days)",
+    "body": ""
+  }
+}

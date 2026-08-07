@@ -49,7 +49,7 @@ export function App() {
       }
       setConfig({
         apiClient: new HttpEmploymentInsuranceApiClient(runtimeConfig.employmentInsuranceBffBaseUrl),
-        contentClient: createContentClient(runtimeConfig.strapiBaseUrl),
+        contentClient: createContentClient(runtimeConfig.strapiBaseUrl, assetBaseUrl),
       });
     });
     return () => {
