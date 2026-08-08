@@ -1,0 +1,25 @@
+# Overrides layered on top of values.yaml for a real AWS EKS deployment (see
+# mfe-pot/docs/plans/20260808-1500-mfe-pot-aws-eks-terraform.md). See
+# mfe-pot-job-bank-mfe/charts/job-bank-mfe/values-eks.yaml for the fuller
+# explanatory comments this pattern was worked out against first.
+
+frontend:
+  image:
+    repository: 147318891438.dkr.ecr.ca-central-1.amazonaws.com/mfe-pot-employment-insurance-mfe
+    pullPolicy: IfNotPresent
+  runtimeConfig:
+    strapiBaseUrl: "https://cms.aws.tn4consulting.com"
+
+backend:
+  image:
+    repository: 147318891438.dkr.ecr.ca-central-1.amazonaws.com/mfe-pot-employment-insurance-bff
+    pullPolicy: IfNotPresent
+  # REDIS_URL/MOCK_IDP_JWKS_URL/MOCK_IDP_ISSUER stay unchanged from
+  # values.yaml -- real in-cluster Service DNS names, identical on EKS and
+  # kind.
+
+ingress:
+  host: employment-insurance-mfe.aws.tn4consulting.com
+  tls:
+    enabled: true
+    clusterIssuer: letsencrypt-staging
