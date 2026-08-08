@@ -1,5 +1,38 @@
 import { clearSession, storeSession } from '@tn4consulting/shared-auth/core';
 import { HttpEmploymentInsuranceApiClient } from './http-employment-insurance-api-client';
+import type { EiApplicationInput } from './models';
+
+const application: EiApplicationInput = {
+  personal: {
+    firstName: 'Alex',
+    lastName: 'Chen',
+    dateOfBirth: '1990-01-01',
+    addressLine1: '123 Main St',
+    city: 'Ottawa',
+    province: 'ON',
+    postalCode: 'K1A 0A1',
+    phone: '6135550100',
+    preferredLanguage: 'en',
+  },
+  separation: {
+    employerName: 'Acme Co.',
+    lastDayWorked: '2026-07-01',
+    reasonCode: 'shortage_of_work',
+    payRate: 25,
+    payPeriod: 'hourly',
+    jobTitle: 'Warehouse associate',
+  },
+  otherEmployment: { hadOtherEmployers: false },
+  eligibility: {
+    workersCompensation: false,
+    pension: false,
+    selfEmployedOrBusiness: false,
+    inTrainingProgram: false,
+  },
+  availability: { availableImmediately: true, educationLevel: 'high_school' },
+  directDeposit: { enrolling: false },
+  declarationAccepted: true,
+};
 
 describe('HttpEmploymentInsuranceApiClient', () => {
   const originalFetch = global.fetch;
@@ -24,7 +57,7 @@ describe('HttpEmploymentInsuranceApiClient', () => {
       .mockResolvedValue({ ok: true, json: async () => ({ id: 'claim-1', status: 'approved' }) });
     global.fetch = fetchMock as unknown as typeof fetch;
 
-    await client.applyForEi('citizen-abc123');
+    await client.applyForEi('citizen-abc123', application);
 
     const [, options] = fetchMock.mock.calls[0];
     expect((options.headers as Record<string, string>)['Authorization']).toBe('Bearer real-looking.jwt.value');
@@ -36,7 +69,7 @@ describe('HttpEmploymentInsuranceApiClient', () => {
       .mockResolvedValue({ ok: true, json: async () => ({ id: 'claim-1', status: 'approved' }) });
     global.fetch = fetchMock as unknown as typeof fetch;
 
-    await client.applyForEi('citizen-abc123');
+    await client.applyForEi('citizen-abc123', application);
 
     const [, options] = fetchMock.mock.calls[0];
     expect((options.headers as Record<string, string>)['Authorization']).toBeUndefined();
@@ -48,7 +81,7 @@ describe('HttpEmploymentInsuranceApiClient', () => {
       json: async () => ({ id: 'claim-1', status: 'approved' }),
     }) as unknown as typeof fetch;
 
-    const claim = await client.applyForEi('mock-citizen-001');
+    const claim = await client.applyForEi('mock-citizen-001', application);
     expect(claim.id).toBe('claim-1');
   });
 

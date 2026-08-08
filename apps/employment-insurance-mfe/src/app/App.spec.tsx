@@ -49,6 +49,11 @@ jest.mock('./content-client', () => ({
     'employment-insurance.reporting-status.overdue',
     'employment-insurance.reporting-status.nextReportDue',
   ],
+  // EiApplicationForm's own content keys -- App.spec.tsx only asserts on
+  // the surrounding page headings, never drills into wizard-step content,
+  // so an empty list (falling back to raw content keys as label text) is
+  // enough here. See EiApplicationForm.spec.tsx for real wizard coverage.
+  APPLICATION_FORM_CONTENT_KEYS: [],
   createContentClient: () => ({ getPageContent: getPageContentMock, getPageContents: getPageContentsMock }),
 }));
 

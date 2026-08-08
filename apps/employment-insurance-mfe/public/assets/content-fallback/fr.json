@@ -53,5 +53,117 @@
   "employment-insurance.reporting-status.nextReportDue": {
     "title": "Prochaine déclaration due le {date} ({days} jours)",
     "body": ""
+  },
+  "employment-insurance.application.breadcrumbHome": { "title": "Accueil", "body": "" },
+  "employment-insurance.application.breadcrumbEi": { "title": "Assurance-emploi", "body": "" },
+  "employment-insurance.application.breadcrumbCurrent": { "title": "Faire une demande d'AE", "body": "" },
+  "employment-insurance.application.backButton": { "title": "Précédent", "body": "" },
+  "employment-insurance.application.nextButton": { "title": "Suivant", "body": "" },
+  "employment-insurance.application.submitButton": { "title": "Soumettre la demande", "body": "" },
+  "employment-insurance.application.requiredError": { "title": "Ce champ est obligatoire.", "body": "" },
+  "employment-insurance.application.yesOption": { "title": "Oui", "body": "" },
+  "employment-insurance.application.noOption": { "title": "Non", "body": "" },
+  "employment-insurance.application.otherOption": { "title": "Autre", "body": "" },
+  "employment-insurance.application.step1Title": { "title": "Renseignements personnels", "body": "" },
+  "employment-insurance.application.step2Title": { "title": "Cessation d'emploi", "body": "" },
+  "employment-insurance.application.step3Title": { "title": "Autre emploi", "body": "" },
+  "employment-insurance.application.step4Title": { "title": "Admissibilité", "body": "" },
+  "employment-insurance.application.step5Title": { "title": "Disponibilité et études", "body": "" },
+  "employment-insurance.application.step6Title": { "title": "Dépôt direct", "body": "" },
+  "employment-insurance.application.step7Title": { "title": "Révision et soumission", "body": "" },
+  "employment-insurance.application.firstNameLabel": { "title": "Prénom", "body": "" },
+  "employment-insurance.application.lastNameLabel": { "title": "Nom de famille", "body": "" },
+  "employment-insurance.application.dateOfBirthLabel": { "title": "Date de naissance", "body": "" },
+  "employment-insurance.application.addressLabel": { "title": "Adresse postale", "body": "" },
+  "employment-insurance.application.cityLabel": { "title": "Ville", "body": "" },
+  "employment-insurance.application.provinceLabel": { "title": "Province ou territoire", "body": "" },
+  "employment-insurance.application.postalCodeLabel": { "title": "Code postal", "body": "" },
+  "employment-insurance.application.phoneLabel": { "title": "Numéro de téléphone", "body": "" },
+  "employment-insurance.application.preferredLanguageLabel": {
+    "title": "Langue officielle préférée",
+    "body": ""
+  },
+  "employment-insurance.application.languageEnglishOption": { "title": "Anglais", "body": "" },
+  "employment-insurance.application.languageFrenchOption": { "title": "Français", "body": "" },
+  "employment-insurance.application.employerNameLabel": { "title": "Nom de l'employeur", "body": "" },
+  "employment-insurance.application.lastDayWorkedLabel": { "title": "Dernier jour travaillé", "body": "" },
+  "employment-insurance.application.jobTitleLabel": { "title": "Titre du poste", "body": "" },
+  "employment-insurance.application.reasonLabel": { "title": "Motif de la cessation d'emploi", "body": "" },
+  "employment-insurance.application.reasonShortageOption": { "title": "Manque de travail", "body": "" },
+  "employment-insurance.application.reasonDismissalOption": { "title": "Congédiement", "body": "" },
+  "employment-insurance.application.reasonQuitOption": { "title": "Départ volontaire", "body": "" },
+  "employment-insurance.application.payRateLabel": { "title": "Taux de rémunération", "body": "" },
+  "employment-insurance.application.payPeriodLabel": { "title": "Période de paie", "body": "" },
+  "employment-insurance.application.payPeriodHourlyOption": { "title": "À l'heure", "body": "" },
+  "employment-insurance.application.payPeriodWeeklyOption": { "title": "À la semaine", "body": "" },
+  "employment-insurance.application.payPeriodBiweeklyOption": { "title": "Aux deux semaines", "body": "" },
+  "employment-insurance.application.payPeriodMonthlyOption": { "title": "Au mois", "body": "" },
+  "employment-insurance.application.hadOtherEmployersLabel": {
+    "title": "Avez-vous travaillé pour un autre employeur au cours des 52 dernières semaines?",
+    "body": ""
+  },
+  "employment-insurance.application.otherEmployerNameLabel": {
+    "title": "Nom de l'autre employeur",
+    "body": ""
+  },
+  "employment-insurance.application.workersCompensationLabel": {
+    "title": "Recevez-vous ou recevrez-vous des indemnités pour accident du travail?",
+    "body": ""
+  },
+  "employment-insurance.application.pensionLabel": { "title": "Recevez-vous une pension?", "body": "" },
+  "employment-insurance.application.selfEmployedLabel": {
+    "title": "Êtes-vous travailleur autonome ou propriétaire d'une entreprise?",
+    "body": ""
+  },
+  "employment-insurance.application.trainingProgramLabel": {
+    "title": "Êtes-vous inscrit à un cours ou à un programme de formation?",
+    "body": ""
+  },
+  "employment-insurance.application.availableImmediatelyLabel": {
+    "title": "Êtes-vous disponible pour commencer à travailler immédiatement?",
+    "body": ""
+  },
+  "employment-insurance.application.availableFromDateLabel": {
+    "title": "Date à laquelle vous serez disponible pour travailler",
+    "body": ""
+  },
+  "employment-insurance.application.educationLevelLabel": {
+    "title": "Niveau de scolarité le plus élevé atteint",
+    "body": ""
+  },
+  "employment-insurance.application.educationHighSchoolOption": { "title": "École secondaire", "body": "" },
+  "employment-insurance.application.educationCollegeTradeOption": {
+    "title": "Certificat collégial ou professionnel",
+    "body": ""
+  },
+  "employment-insurance.application.educationUndergraduateOption": {
+    "title": "Diplôme de premier cycle",
+    "body": ""
+  },
+  "employment-insurance.application.educationGraduateOption": {
+    "title": "Diplôme d'études supérieures",
+    "body": ""
+  },
+  "employment-insurance.application.enrollDirectDepositLabel": {
+    "title": "Voulez-vous vous inscrire au dépôt direct maintenant?",
+    "body": ""
+  },
+  "employment-insurance.application.institutionNumberLabel": {
+    "title": "Numéro de l'institution financière",
+    "body": ""
+  },
+  "employment-insurance.application.transitNumberLabel": {
+    "title": "Numéro de succursale (transit)",
+    "body": ""
+  },
+  "employment-insurance.application.accountNumberLabel": { "title": "Numéro de compte", "body": "" },
+  "employment-insurance.application.reviewHeading": { "title": "Révisez votre demande", "body": "" },
+  "employment-insurance.application.declarationLabel": {
+    "title": "J'ai lu et j'accepte les droits et responsabilités liés à une demande de prestations d'assurance-emploi.",
+    "body": ""
+  },
+  "employment-insurance.application.declarationRequiredError": {
+    "title": "Vous devez accepter les droits et responsabilités avant de soumettre la demande.",
+    "body": ""
   }
 }

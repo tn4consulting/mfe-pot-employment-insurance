@@ -1,4 +1,4 @@
-import { EiClaim, EiReport, EiReportingStatus } from './models';
+import { EiApplicationInput, EiClaim, EiReport, EiReportingStatus } from './models';
 
 /**
  * Employment Insurance's feature components depend on this abstraction,
@@ -11,7 +11,7 @@ import { EiClaim, EiReport, EiReportingStatus } from './models';
  * bundle with no Angular installed at all.
  */
 export interface EmploymentInsuranceApiClient {
-  applyForEi(applicantSub: string): Promise<EiClaim>;
+  applyForEi(applicantSub: string, application: EiApplicationInput): Promise<EiClaim>;
   getClaim(applicantSub: string): Promise<EiClaim | null>;
   getReportingStatus(applicantSub: string): Promise<EiReportingStatus | null>;
   submitReport(

@@ -6,8 +6,9 @@ import { getStoredSession } from '@tn4consulting/shared-auth/core';
 import type { ContentClient } from '@tn4consulting/shared-content-client';
 import { fillTemplate } from '@tn4consulting/shared-content-client';
 import type { Locale } from '@tn4consulting/shared-i18n';
-import type { EiClaim, EmploymentInsuranceApiClient } from 'employment-insurance-data-access';
+import type { EiApplicationInput, EiClaim, EmploymentInsuranceApiClient } from 'employment-insurance-data-access';
 import { APPLICATIONS_CONTENT_KEYS } from './content-client';
+import { EiApplicationForm } from './EiApplicationForm';
 import { usePageContents } from './use-page-contents';
 
 export interface ApplicationsProps {
@@ -37,14 +38,14 @@ export function Applications({ apiClient, contentClient, locale }: ApplicationsP
     });
   }
 
-  async function apply(): Promise<void> {
+  async function apply(application: EiApplicationInput): Promise<void> {
     const session = getStoredSession();
     if (!session) {
       return;
     }
     setSubmitting(true);
     try {
-      setConfirmation(await apiClient.applyForEi(session.sub));
+      setConfirmation(await apiClient.applyForEi(session.sub, application));
     } catch (err) {
       console.error('Failed to submit EI application', err);
       setSubmitError(true);
@@ -66,12 +67,7 @@ export function Applications({ apiClient, contentClient, locale }: ApplicationsP
       ) : submitError ? (
         <p role="alert">{label('employment-insurance.applications.error')}</p>
       ) : (
-        <>
-          <p>{label('employment-insurance.applications.intro')}</p>
-          <button type="button" disabled={submitting} onClick={() => void apply()}>
-            {label('employment-insurance.applications.button')}
-          </button>
-        </>
+        <EiApplicationForm contentClient={contentClient} locale={locale} submitting={submitting} onSubmit={(application) => void apply(application)} />
       )}
     </section>
   );

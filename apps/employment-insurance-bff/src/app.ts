@@ -2,7 +2,7 @@ import cors from 'cors';
 import express, { Express } from 'express';
 import { verifyBearerToken, whoamiHandler } from '@tn4consulting/shared-auth-server';
 import { mockIdp, sessionCache } from './config';
-import { createClaim, createReport, getClaim, getReports } from './data';
+import { createClaim, createReport, EiApplicationInput, getClaim, getReports } from './data';
 import { computeReportingStatus } from './reporting-status';
 
 /**
@@ -20,12 +20,27 @@ export function createApp(): Express {
   });
 
   app.post('/api/applications', async (req, res) => {
-    const { applicantSub } = req.body as { applicantSub?: string };
+    const { applicantSub, application } = req.body as {
+      applicantSub?: string;
+      application?: EiApplicationInput;
+    };
     if (!applicantSub) {
       res.status(400).json({ error: 'applicantSub is required' });
       return;
     }
-    res.status(201).json(await createClaim(applicantSub));
+    if (!application || application.declarationAccepted !== true) {
+      res.status(400).json({ error: 'application with declarationAccepted=true is required' });
+      return;
+    }
+    // Only the two fields calculateWeeklyBenefitAmount() actually reads --
+    // not a full schema check -- so a malformed application 400s cleanly
+    // instead of throwing past this point (undefined.payRate) into an
+    // unhandled 500.
+    if (!application.separation || typeof application.separation.payRate !== 'number' || !application.separation.payPeriod) {
+      res.status(400).json({ error: 'application.separation.payRate and payPeriod are required' });
+      return;
+    }
+    res.status(201).json(await createClaim(applicantSub, application));
   });
 
   app.get('/api/claims', async (req, res) => {

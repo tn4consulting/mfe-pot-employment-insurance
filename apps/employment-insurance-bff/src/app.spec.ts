@@ -1,5 +1,38 @@
 import request from 'supertest';
 import { createApp } from './app';
+import type { EiApplicationInput } from './data';
+
+const application: EiApplicationInput = {
+  personal: {
+    firstName: 'Alex',
+    lastName: 'Chen',
+    dateOfBirth: '1990-01-01',
+    addressLine1: '123 Main St',
+    city: 'Ottawa',
+    province: 'ON',
+    postalCode: 'K1A 0A1',
+    phone: '6135550100',
+    preferredLanguage: 'en',
+  },
+  separation: {
+    employerName: 'Acme Co.',
+    lastDayWorked: '2026-07-01',
+    reasonCode: 'shortage_of_work',
+    payRate: 25,
+    payPeriod: 'hourly',
+    jobTitle: 'Warehouse associate',
+  },
+  otherEmployment: { hadOtherEmployers: false },
+  eligibility: {
+    workersCompensation: false,
+    pension: false,
+    selfEmployedOrBusiness: false,
+    inTrainingProgram: false,
+  },
+  availability: { availableImmediately: true, educationLevel: 'high_school' },
+  directDeposit: { enrolling: false },
+  declarationAccepted: true,
+};
 
 // The real JWKS-based JWT verification and the whoami response shape are
 // both covered by shared-auth-server's own tests -- this only proves
@@ -37,12 +70,29 @@ describe('employment-insurance-bff', () => {
     expect(res.status).toBe(400);
   });
 
-  it('creates a claim on application', async () => {
+  it('rejects an application missing the declaration acceptance', async () => {
     const res = await request(app)
       .post('/api/applications')
-      .send({ applicantSub: 'mock-citizen-001' });
+      .send({ applicantSub: 'mock-citizen-001', application: { ...application, declarationAccepted: false } });
+    expect(res.status).toBe(400);
+  });
+
+  it('rejects an application missing separation.payRate/payPeriod (used to 500 instead of 400)', async () => {
+    const res = await request(app)
+      .post('/api/applications')
+      .send({ applicantSub: 'mock-citizen-001', application: { declarationAccepted: true } });
+    expect(res.status).toBe(400);
+  });
+
+  it('creates a claim on application, deriving the weekly benefit from the submitted rate of pay', async () => {
+    const res = await request(app)
+      .post('/api/applications')
+      .send({ applicantSub: 'mock-citizen-001', application });
     expect(res.status).toBe(201);
     expect(res.body).toMatchObject({ applicantSub: 'mock-citizen-001', status: 'approved' });
+    // $25/hr * 37.5 hrs/week * 55% = $515.625, rounded to 2 decimals.
+    expect(res.body.weeklyBenefitAmount).toBe(515.63);
+    expect(res.body.application).toMatchObject({ declarationAccepted: true });
   });
 
   it('returns 404 when there is no claim on file', async () => {
@@ -53,7 +103,7 @@ describe('employment-insurance-bff', () => {
   it('returns the most recent claim for an applicant', async () => {
     const created = await request(app)
       .post('/api/applications')
-      .send({ applicantSub: 'mock-citizen-002' });
+      .send({ applicantSub: 'mock-citizen-002', application });
 
     const res = await request(app).get('/api/claims').query({ applicantSub: 'mock-citizen-002' });
     expect(res.status).toBe(200);
@@ -86,7 +136,7 @@ describe('employment-insurance-bff', () => {
   it('reports a not-yet-due status anchored on the claim date when no reports exist', async () => {
     const created = await request(app)
       .post('/api/applications')
-      .send({ applicantSub: 'mock-citizen-003' });
+      .send({ applicantSub: 'mock-citizen-003', application });
 
     const res = await request(app)
       .get('/api/reporting-status')
@@ -101,7 +151,7 @@ describe('employment-insurance-bff', () => {
   it('advances the due date past the most recently reported period', async () => {
     const created = await request(app)
       .post('/api/applications')
-      .send({ applicantSub: 'mock-citizen-004' });
+      .send({ applicantSub: 'mock-citizen-004', application });
     const claimId = created.body.id as string;
 
     const farFutureEnd = new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
@@ -135,7 +185,7 @@ describe('employment-insurance-bff', () => {
   });
 
   it('clears claims for a sub after /api/reset', async () => {
-    await request(app).post('/api/applications').send({ applicantSub: 'mock-citizen-reset' });
+    await request(app).post('/api/applications').send({ applicantSub: 'mock-citizen-reset', application });
 
     const resetRes = await request(app).post('/api/reset');
     expect(resetRes.status).toBe(204);

@@ -1,6 +1,6 @@
 import { getAccessToken } from '@tn4consulting/shared-auth/core';
 import { EmploymentInsuranceApiClient } from './employment-insurance-api-client';
-import { EiClaim, EiReport, EiReportingStatus } from './models';
+import { EiApplicationInput, EiClaim, EiReport, EiReportingStatus } from './models';
 
 /** Local dev / integration tests: calls the real employment-insurance-bff over HTTP. */
 export class HttpEmploymentInsuranceApiClient implements EmploymentInsuranceApiClient {
@@ -17,11 +17,11 @@ export class HttpEmploymentInsuranceApiClient implements EmploymentInsuranceApiC
     return { ...extra, ...(token ? { Authorization: `Bearer ${token}` } : {}) };
   }
 
-  async applyForEi(applicantSub: string): Promise<EiClaim> {
+  async applyForEi(applicantSub: string, application: EiApplicationInput): Promise<EiClaim> {
     const response = await fetch(`${this.baseUrl}/api/applications`, {
       method: 'POST',
       headers: this.authHeaders({ 'Content-Type': 'application/json' }),
-      body: JSON.stringify({ applicantSub }),
+      body: JSON.stringify({ applicantSub, application }),
     });
     if (!response.ok) {
       throw new Error(`employment-insurance-bff returned ${response.status} for POST /api/applications`);

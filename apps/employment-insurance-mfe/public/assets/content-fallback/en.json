@@ -41,5 +41,108 @@
   "employment-insurance.reporting-status.nextReportDue": {
     "title": "Next report due {date} ({days} days)",
     "body": ""
+  },
+  "employment-insurance.application.breadcrumbHome": { "title": "Home", "body": "" },
+  "employment-insurance.application.breadcrumbEi": { "title": "Employment Insurance", "body": "" },
+  "employment-insurance.application.breadcrumbCurrent": { "title": "Apply for EI", "body": "" },
+  "employment-insurance.application.backButton": { "title": "Back", "body": "" },
+  "employment-insurance.application.nextButton": { "title": "Next", "body": "" },
+  "employment-insurance.application.submitButton": { "title": "Submit application", "body": "" },
+  "employment-insurance.application.requiredError": { "title": "This field is required.", "body": "" },
+  "employment-insurance.application.yesOption": { "title": "Yes", "body": "" },
+  "employment-insurance.application.noOption": { "title": "No", "body": "" },
+  "employment-insurance.application.otherOption": { "title": "Other", "body": "" },
+  "employment-insurance.application.step1Title": { "title": "Personal information", "body": "" },
+  "employment-insurance.application.step2Title": { "title": "Employment separation", "body": "" },
+  "employment-insurance.application.step3Title": { "title": "Other employment", "body": "" },
+  "employment-insurance.application.step4Title": { "title": "Eligibility", "body": "" },
+  "employment-insurance.application.step5Title": { "title": "Availability and education", "body": "" },
+  "employment-insurance.application.step6Title": { "title": "Direct deposit", "body": "" },
+  "employment-insurance.application.step7Title": { "title": "Review and submit", "body": "" },
+  "employment-insurance.application.firstNameLabel": { "title": "First name", "body": "" },
+  "employment-insurance.application.lastNameLabel": { "title": "Last name", "body": "" },
+  "employment-insurance.application.dateOfBirthLabel": { "title": "Date of birth", "body": "" },
+  "employment-insurance.application.addressLabel": { "title": "Mailing address", "body": "" },
+  "employment-insurance.application.cityLabel": { "title": "City", "body": "" },
+  "employment-insurance.application.provinceLabel": { "title": "Province or territory", "body": "" },
+  "employment-insurance.application.postalCodeLabel": { "title": "Postal code", "body": "" },
+  "employment-insurance.application.phoneLabel": { "title": "Telephone number", "body": "" },
+  "employment-insurance.application.preferredLanguageLabel": {
+    "title": "Preferred official language",
+    "body": ""
+  },
+  "employment-insurance.application.languageEnglishOption": { "title": "English", "body": "" },
+  "employment-insurance.application.languageFrenchOption": { "title": "French", "body": "" },
+  "employment-insurance.application.employerNameLabel": { "title": "Employer name", "body": "" },
+  "employment-insurance.application.lastDayWorkedLabel": { "title": "Last day worked", "body": "" },
+  "employment-insurance.application.jobTitleLabel": { "title": "Job title", "body": "" },
+  "employment-insurance.application.reasonLabel": { "title": "Reason for separation", "body": "" },
+  "employment-insurance.application.reasonShortageOption": { "title": "Shortage of work", "body": "" },
+  "employment-insurance.application.reasonDismissalOption": { "title": "Dismissal", "body": "" },
+  "employment-insurance.application.reasonQuitOption": { "title": "Quit", "body": "" },
+  "employment-insurance.application.payRateLabel": { "title": "Rate of pay", "body": "" },
+  "employment-insurance.application.payPeriodLabel": { "title": "Pay period", "body": "" },
+  "employment-insurance.application.payPeriodHourlyOption": { "title": "Per hour", "body": "" },
+  "employment-insurance.application.payPeriodWeeklyOption": { "title": "Per week", "body": "" },
+  "employment-insurance.application.payPeriodBiweeklyOption": { "title": "Every two weeks", "body": "" },
+  "employment-insurance.application.payPeriodMonthlyOption": { "title": "Per month", "body": "" },
+  "employment-insurance.application.hadOtherEmployersLabel": {
+    "title": "Did you work for any other employer in the past 52 weeks?",
+    "body": ""
+  },
+  "employment-insurance.application.otherEmployerNameLabel": { "title": "Other employer name", "body": "" },
+  "employment-insurance.application.workersCompensationLabel": {
+    "title": "Are you receiving or will you receive workers' compensation payments?",
+    "body": ""
+  },
+  "employment-insurance.application.pensionLabel": { "title": "Are you receiving a pension?", "body": "" },
+  "employment-insurance.application.selfEmployedLabel": {
+    "title": "Are you self-employed or do you own a business?",
+    "body": ""
+  },
+  "employment-insurance.application.trainingProgramLabel": {
+    "title": "Are you enrolled in a course or training program?",
+    "body": ""
+  },
+  "employment-insurance.application.availableImmediatelyLabel": {
+    "title": "Are you available to start work immediately?",
+    "body": ""
+  },
+  "employment-insurance.application.availableFromDateLabel": {
+    "title": "Date you will be available for work",
+    "body": ""
+  },
+  "employment-insurance.application.educationLevelLabel": {
+    "title": "Highest level of education completed",
+    "body": ""
+  },
+  "employment-insurance.application.educationHighSchoolOption": { "title": "High school", "body": "" },
+  "employment-insurance.application.educationCollegeTradeOption": {
+    "title": "College or trade certificate",
+    "body": ""
+  },
+  "employment-insurance.application.educationUndergraduateOption": {
+    "title": "Undergraduate degree",
+    "body": ""
+  },
+  "employment-insurance.application.educationGraduateOption": { "title": "Graduate degree", "body": "" },
+  "employment-insurance.application.enrollDirectDepositLabel": {
+    "title": "Would you like to enroll in direct deposit now?",
+    "body": ""
+  },
+  "employment-insurance.application.institutionNumberLabel": {
+    "title": "Financial institution number",
+    "body": ""
+  },
+  "employment-insurance.application.transitNumberLabel": { "title": "Branch (transit) number", "body": "" },
+  "employment-insurance.application.accountNumberLabel": { "title": "Account number", "body": "" },
+  "employment-insurance.application.reviewHeading": { "title": "Review your application", "body": "" },
+  "employment-insurance.application.declarationLabel": {
+    "title": "I have read and agree to the Rights and Responsibilities of claiming Employment Insurance benefits.",
+    "body": ""
+  },
+  "employment-insurance.application.declarationRequiredError": {
+    "title": "You must accept the rights and responsibilities before submitting.",
+    "body": ""
   }
 }
