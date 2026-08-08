@@ -22,4 +22,4 @@ ingress:
   host: employment-insurance-mfe.aws.tn4consulting.com
   tls:
     enabled: true
-    clusterIssuer: letsencrypt-staging
+    clusterIssuer: letsencrypt-prod
